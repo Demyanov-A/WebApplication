@@ -1,10 +1,10 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-var configuration = app.Configuration;
+//var configuration = app.Configuration;
 
-var greetings = configuration["CustomGreetings"];
+//var greetings = configuration["CustomGreetings"];
 
-app.MapGet("/", () => greetings);
+app.MapGet("/", () => app.Configuration["CustomGreetings"]);
 
 app.Run();
