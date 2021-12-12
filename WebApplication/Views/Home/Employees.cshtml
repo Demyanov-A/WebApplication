@@ -31,7 +31,7 @@
             <td>@employee.Patronymic</td>
             <td>@employee.Age</td>
             <td>
-                <a href="~/Home/employee/@employee.Id">инфо.</a>Rj
+                @Html.ActionLink("Карточка сотрудника", "EmployeeInfo", new {id = employee.Id})
             </td>
         </tr>
     }
