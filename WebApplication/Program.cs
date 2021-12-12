@@ -2,11 +2,18 @@
 
 //builder.Configuration.AddCommandLine(args);
 
+#region Настройка построителя приложения - определение содержимого
+
 var services = builder.Services;
 
 services.AddControllersWithViews();
 
+#endregion
+
+//Сборка приложения
 var app = builder.Build();
+
+#region Конфигурирование конвейера обработки входящих соединений
 
 if (app.Environment.IsDevelopment())
 {
@@ -25,5 +32,7 @@ app.MapGet("/throw", () =>
 });
 
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+#endregion
 
+//Запуск приложения
 app.Run();
