@@ -24,7 +24,7 @@
                 <td>@employee.Patronymic</td>
                 <td>@employee.Age</td>
                 <td>
-                    @Html.ActionLink("Карточка сотрудника", "EmployeeInfo", new {id = employee.Id})
+                    <a asp-controller="Employees" asp-action="EmployeeInfo" asp-route-id="@employee.Id">инфо.</a>
                 </td>
             </tr>
         }

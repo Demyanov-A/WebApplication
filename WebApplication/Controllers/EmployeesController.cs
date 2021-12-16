@@ -19,7 +19,10 @@ namespace WebApplication.Controllers
 
         public IActionResult EmployeeInfo(int id)
         {
-            var employee = __Employees.Find(e => e.Id.Equals(id));
+            var employee = __Employees.FirstOrDefault(e => e.Id.Equals(id));
+
+            if(employee is null) return NotFound();
+
             return View(employee);
         }
     }
