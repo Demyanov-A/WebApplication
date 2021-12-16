@@ -19,9 +19,13 @@ namespace WebApplication.Controllers
 
         public IActionResult EmployeeInfo(int id)
         {
+            ViewData["TestValue"] = 123;
+
             var employee = __Employees.FirstOrDefault(e => e.Id.Equals(id));
 
             if(employee is null) return NotFound();
+
+            ViewBag.SelectedEmployee = employee;
 
             return View(employee);
         }
