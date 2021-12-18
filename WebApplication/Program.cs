@@ -1,4 +1,5 @@
 ﻿using WebApplication.Infrastructure.Conventions;
+using WebApplication.Infrastructure.Middleware;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -22,9 +23,16 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+//app.Map("/testpath", async context => await context.Response.WriteAsync("Test middleware"));
+
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseMiddleware<TestMiddleware>();
+
+app.UseWelcomePage("/welcome");
 
 app.MapControllerRoute(
     name: "default", 
