@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
@@ -35,12 +36,35 @@ namespace WebApplication.Controllers
             return View(employee);
         }
 
-        public IActionResult Edit(int id) => View();
+        public IActionResult Edit(int id)
+        {
+            var employee = __Employees.FirstOrDefault(x => x.Id == id);
 
-        public IActionResult Create() => View();
+            if(employee is null) return NotFound();
+
+            var model = new EmployeeEditViewModel
+            {
+                Id = employee.Id,
+                Name = employee.FirstName,
+                LastName = employee.LastName,
+                Patronymic = employee.Patronymic,
+                Age = employee.Age,
+            };
+            
+            return View(model);
+        }
+
+        public IActionResult Edit(EmployeeEditViewModel model)
+        {
+            //Обработка модели.....
+
+            return RedirectToAction("Index");
+        }
+
+        //public IActionResult Create() => View();
         
         public IActionResult Delete(int id) => View();
             
-        }
+        
     }
 }
