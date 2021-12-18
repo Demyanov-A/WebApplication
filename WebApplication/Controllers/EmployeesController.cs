@@ -3,6 +3,8 @@ using WebApplication.Models;
 
 namespace WebApplication.Controllers
 {
+    //[Route("empl/[action]/{Id?}")]
+    //[Route("Staff/{action=Index}/{Id?}")]
     public class EmployeesController : Controller
     {
         private static readonly List<Employee> __Employees = new()
@@ -17,6 +19,7 @@ namespace WebApplication.Controllers
             return View(result);
         }
 
+        //[Route("~/employee/info-{id}")]
         public IActionResult EmployeeInfo(int id)
         {
             ViewData["TestValue"] = 123;
