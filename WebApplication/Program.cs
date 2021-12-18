@@ -1,4 +1,6 @@
-﻿var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+﻿using WebApplication.Infrastructure.Conventions;
+
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 //builder.Configuration.AddCommandLine(args);
 
@@ -6,7 +8,10 @@
 
 var services = builder.Services;
 
-services.AddControllersWithViews();
+services.AddControllersWithViews(opt =>
+{
+    opt.Conventions.Add(new TestConvention());
+});
 
 #endregion
 
