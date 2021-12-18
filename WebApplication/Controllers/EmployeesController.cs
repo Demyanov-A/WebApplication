@@ -35,27 +35,11 @@ namespace WebApplication.Controllers
             return View(employee);
         }
 
-        public IActionResult Edit()
-        {
-            return View();
-        }
+        public IActionResult Edit(int id) => View();
 
-        public void AddEmployee(Employee employee)
-        {
-            __Employees.Add(employee);
-        }
-
-        public IActionResult RemoveEmployee(Employee employee)
-        {
-            if(__Employees.Contains(employee))
-            {
-                __Employees.Remove(employee);
-                return View("Index");
-            }
-            else
-            {
-                return NotFound();
-            }
+        public IActionResult Create() => View();
+        
+        public IActionResult Delete(int id) => View();
             
         }
     }
