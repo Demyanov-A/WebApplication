@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication.Data;
 using WebApplication.Models;
 
 namespace WebApplication.Controllers
@@ -7,12 +8,13 @@ namespace WebApplication.Controllers
     //[Route("Staff/{action=Index}/{Id?}")]
     public class EmployeesController : Controller
     {
-        private static readonly List<Employee> __Employees = new()
+        private ICollection<Employee> __Employees;
+
+        public EmployeesController()
         {
-            new Employee() { Id = 1, FirstName = "Иван", LastName = "Иванов", Patronymic = "Иванович", Age = 21 },
-            new Employee() { Id = 2, FirstName = "Петр", LastName = "Петров", Patronymic = "Петрович", Age = 22 },
-            new Employee() { Id = 3, FirstName = "Сидор", LastName = "Сидоров", Patronymic = "Сидорович", Age = 23 },
-        };
+            __Employees = TestData.Employees;
+        }
+
         public IActionResult Index()
         {
             var result = __Employees;
