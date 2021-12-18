@@ -14,5 +14,7 @@ public class HomeController : Controller
     {
         return $"Hello World {id} - {Value1}";
     }
+
+    public void Throw(string Message) => throw new ApplicationException(Message);
 }
 
