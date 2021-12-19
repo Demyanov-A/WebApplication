@@ -12,6 +12,6 @@ namespace WebApplication.Services.Interfaces
 
         bool Delete(int id);
 
-        bool Add(Employee employee);
+        int Add(Employee employee);
     }
 }
