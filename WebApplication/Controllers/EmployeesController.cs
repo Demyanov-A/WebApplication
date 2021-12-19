@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Services.Interfaces;
 using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
@@ -9,16 +10,16 @@ namespace WebApplication.Controllers
     //[Route("Staff/{action=Index}/{Id?}")]
     public class EmployeesController : Controller
     {
-        private ICollection<Employee> __Employees;
+        private readonly IEmployeesData _EmployeesData;
 
-        public EmployeesController()
+        public EmployeesController(IEmployeesData EmployeesData)
         {
-            __Employees = TestData.Employees;
+            _EmployeesData = EmployeesData;
         }
 
         public IActionResult Index()
         {
-            var result = __Employees;
+            var result = _EmployeesData.GetAll();
             return View(result);
         }
 
@@ -27,7 +28,7 @@ namespace WebApplication.Controllers
         {
             ViewData["TestValue"] = 123;
 
-            var employee = __Employees.FirstOrDefault(e => e.Id.Equals(id));
+            var employee = _EmployeesData.GetById(id);
 
             if(employee is null) return NotFound();
 
@@ -38,9 +39,10 @@ namespace WebApplication.Controllers
 
         public IActionResult Edit(int id)
         {
-            var employee = __Employees.FirstOrDefault(x => x.Id == id);
+            var employee = _EmployeesData.GetById(id);
 
-            if(employee is null) return NotFound();
+            if(employee is null) 
+                return NotFound();
 
             var model = new EmployeeEditViewModel
             {
@@ -54,9 +56,20 @@ namespace WebApplication.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
-            //Обработка модели.....
+            var employee = new Employee
+            {
+                Id = model.Id,
+                Age = model.Age,
+                FirstName = model.Name,
+                LastName = model.LastName,
+                Patronymic = model.Patronymic,
+            };
+
+            if (!_EmployeesData.Edit(employee))
+                return NotFound();
 
             return RedirectToAction("Index");
         }

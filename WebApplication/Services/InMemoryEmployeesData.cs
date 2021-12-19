@@ -35,8 +35,8 @@ namespace WebApplication.Services
                 return false;
 
             _Employees.Remove(employee);
-            return true;
 
+            return true;
         }
 
         public bool Edit(Employee employee)
@@ -44,7 +44,8 @@ namespace WebApplication.Services
             if (employee is null)
                 throw new ArgumentNullException(nameof(employee));
 
-            return _Employees.Contains(employee);
+            if(_Employees.Contains(employee))
+                return true;
 
             var db_employee = GetById(employee.Id);
             if (db_employee is null)

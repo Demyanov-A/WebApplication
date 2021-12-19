@@ -2,7 +2,7 @@
 
 namespace WebApplication.Data
 {
-    public class TestData
+    public static class TestData
     {
         public static List<Employee> Employees { get; } = new()
         {
