@@ -1,5 +1,7 @@
 ﻿using WebApplication.Infrastructure.Conventions;
 using WebApplication.Infrastructure.Middleware;
+using WebApplication.Services;
+using WebApplication.Services.Interfaces;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ services.AddControllersWithViews(opt =>
 {
     opt.Conventions.Add(new TestConvention());
 });
+
+services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
 
 #endregion
 
