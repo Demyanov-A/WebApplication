@@ -6,11 +6,13 @@ namespace WebApplication.Services
 {
     public class InMemoryEmployeesData : IEmployeesData
     {
+        private readonly ILogger<InMemoryEmployeesData> _Logger;
         private readonly ICollection<Employee> _Employees;
 
         private int _MaxFreeId;
-        public InMemoryEmployeesData()
+        public InMemoryEmployeesData(ILogger<InMemoryEmployeesData> logger) //ILogger - обязательно интерфейс, а не класс!!! <InMemoryEmployeesData> - это название заголовков в журнале
         {
+            _Logger = logger;
             _Employees = TestData.Employees;
             _MaxFreeId = _Employees.DefaultIfEmpty().Max(e => e?.Id ?? 0) + 1;
         }
@@ -32,9 +34,14 @@ namespace WebApplication.Services
         {
             var employee = GetById(id);
             if (employee is null)
+            {
+                _Logger.LogWarning("Попытка удаления отсутствующего сотрудника с Id:{0}!", employee.Id);
                 return false;
+            }
 
             _Employees.Remove(employee);
+
+            _Logger.LogWarning("Был удален сотрудник с Id:{0}!", employee.Id);
 
             return true;
         }
@@ -49,12 +56,18 @@ namespace WebApplication.Services
 
             var db_employee = GetById(employee.Id);
             if (db_employee is null)
+            {
+                _Logger.LogWarning("Попытка редактирования отсутствующего сотрудника с Id:{0}!", employee.Id);
                 return false;
+            }
+                
 
             db_employee.Age = employee.Age;
             db_employee.FirstName = employee.FirstName;
             db_employee.LastName = employee.LastName;
             db_employee.Patronymic = employee.Patronymic;
+
+            _Logger.LogWarning("Информация о сотруднике с Id:{0} была изменена!", employee.Id);
 
             return true;
         }
