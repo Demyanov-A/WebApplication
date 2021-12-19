@@ -37,9 +37,12 @@ namespace WebApplication.Controllers
             return View(employee);
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            var employee = _EmployeesData.GetById(id);
+            if (id is null)
+                return View(new EmployeeViewModel());
+
+            var employee = _EmployeesData.GetById((int)id);
 
             if(employee is null) 
                 return NotFound();
@@ -68,13 +71,15 @@ namespace WebApplication.Controllers
                 Patronymic = model.Patronymic,
             };
 
-            if (!_EmployeesData.Edit(employee))
+            if (model.Id == 0)
+                _EmployeesData.Add(employee);
+            else if (!_EmployeesData.Edit(employee))
                 return NotFound();
 
             return RedirectToAction("Index");
         }
 
-        //public IActionResult Create() => View();
+        public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
         public IActionResult Delete(int id)
         {
