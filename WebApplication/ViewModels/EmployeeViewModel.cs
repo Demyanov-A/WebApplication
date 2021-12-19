@@ -1,6 +1,6 @@
 ﻿namespace WebApplication.ViewModels
 {
-    public class EmployeeEditViewModel
+    public class EmployeeViewModel
     {
         public int Id { get; set; }
 
