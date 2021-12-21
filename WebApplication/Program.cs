@@ -1,17 +1,24 @@
-﻿var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+﻿using WebApplication.Infrastructure.Conventions;
+using WebApplication.Infrastructure.Middleware;
+using WebApplication.Services;
+using WebApplication.Services.Interfaces;
 
-//builder.Configuration.AddCommandLine(args);
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 #region Настройка построителя приложения - определение содержимого
 
 var services = builder.Services;
 
-services.AddControllersWithViews();
+services.AddControllersWithViews(opt =>
+{
+    opt.Conventions.Add(new TestConvention());
+});
+
+services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
 
 #endregion
 
-//Сборка приложения
-var app = builder.Build();
+var app = builder.Build(); //Сборка приложения
 
 #region Конфигурирование конвейера обработки входящих соединений
 
@@ -20,21 +27,20 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+//app.Map("/testpath", async context => await context.Response.WriteAsync("Test middleware"));
+
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
-//var configuration = app.Configuration;
-//var greetings = configuration["CustomGreetings"];
-//app.MapGet("/", () => app.Configuration["CustomGreetings"]);
+app.UseMiddleware<TestMiddleware>();
 
-app.MapGet("/throw", () =>
-{
-    throw new  ApplicationException("Ошибка в программе!");
-});
+app.UseWelcomePage("/welcome");
 
-app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default", 
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 #endregion
 
-//Запуск приложения
-app.Run();
+app.Run();//Запуск приложения

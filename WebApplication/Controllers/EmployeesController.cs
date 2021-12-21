@@ -1,27 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication.Data;
 using WebApplication.Models;
+using WebApplication.Services.Interfaces;
+using WebApplication.ViewModels;
 
 namespace WebApplication.Controllers
 {
+    //[Route("empl/[action]/{Id?}")]
+    //[Route("Staff/{action=Index}/{Id?}")]
     public class EmployeesController : Controller
     {
-        private static readonly List<Employee> __Employees = new()
+        private readonly IEmployeesData _EmployeesData;
+
+        public EmployeesController(IEmployeesData EmployeesData)
         {
-            new Employee() { Id = 1, FirstName = "Иван", LastName = "Иванов", Patronymic = "Иванович", Age = 21 },
-            new Employee() { Id = 2, FirstName = "Петр", LastName = "Петров", Patronymic = "Петрович", Age = 22 },
-            new Employee() { Id = 3, FirstName = "Сидор", LastName = "Сидоров", Patronymic = "Сидорович", Age = 23 },
-        };
+            _EmployeesData = EmployeesData;
+        }
+
         public IActionResult Index()
         {
-            var result = __Employees;
+            var result = _EmployeesData.GetAll();
             return View(result);
         }
 
+        //[Route("~/employee/info-{id}")]
         public IActionResult EmployeeInfo(int id)
         {
             ViewData["TestValue"] = 123;
 
-            var employee = __Employees.FirstOrDefault(e => e.Id.Equals(id));
+            var employee = _EmployeesData.GetById(id);
 
             if(employee is null) return NotFound();
 
@@ -30,28 +37,81 @@ namespace WebApplication.Controllers
             return View(employee);
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int? id)
         {
-            return View();
-        }
+            if (id is null)
+                return View(new EmployeeViewModel());
 
-        public void AddEmployee(Employee employee)
-        {
-            __Employees.Add(employee);
-        }
+            var employee = _EmployeesData.GetById((int)id);
 
-        public IActionResult RemoveEmployee(Employee employee)
-        {
-            if(__Employees.Contains(employee))
-            {
-                __Employees.Remove(employee);
-                return View("Index");
-            }
-            else
-            {
+            if(employee is null) 
                 return NotFound();
-            }
+
+            var model = new EmployeeViewModel
+            {
+                Id = employee.Id,
+                Name = employee.FirstName,
+                LastName = employee.LastName,
+                Patronymic = employee.Patronymic,
+                Age = employee.Age,
+            };
             
+            return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Edit(EmployeeViewModel model)
+        {
+            var employee = new Employee
+            {
+                Id = model.Id,
+                Age = model.Age,
+                FirstName = model.Name,
+                LastName = model.LastName,
+                Patronymic = model.Patronymic,
+            };
+
+            if (model.Id == 0)
+                _EmployeesData.Add(employee);
+            else if (!_EmployeesData.Edit(employee))
+                return NotFound();
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Create() => View("Edit", new EmployeeViewModel());
+
+        public IActionResult Delete(int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            var employee = _EmployeesData.GetById(id);
+            if (!_EmployeesData.Edit(employee))
+                return NotFound();
+
+            var model = new EmployeeViewModel
+            {
+                Id = employee.Id,
+                Name = employee.FirstName,
+                LastName = employee.LastName,
+                Patronymic = employee.Patronymic,
+                Age = employee.Age,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            if (!_EmployeesData.Delete(id))
+                return NotFound();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
