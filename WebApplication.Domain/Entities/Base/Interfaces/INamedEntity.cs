@@ -1,6 +1,7 @@
 ﻿namespace WebApplication.Domain.Entities.Base.Interfaces;
 
-public interface INamedEntity : IEntity
+public abstract class INamedEntity : IEntity
 {
-    string Name { get; set; }
+    public abstract string Name { get; set; }
+    public abstract int Id { get; set; }
 }
