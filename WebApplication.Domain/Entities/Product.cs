@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebApplication.Domain.Entities.Base;
 using WebApplication.Domain.Entities.Base.Interfaces;
 
-namespace WebApplication.Domain.Entities.Base
+namespace WebApplication.Domain.Entities
 {
     public class Product : NamedEntity, IOrderEntity
     {
