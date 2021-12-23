@@ -2,7 +2,7 @@
 
 namespace WebApplication.Domain.Entities.Base;
 
-public abstract class NamedEntity : INamedEntity, IEntity
+public abstract class NamedEntity : Entity, INamedEntity
 {
-    public override string Name { get; set; }
+    public string Name { get; set; }
 }
