@@ -15,6 +15,7 @@ services.AddControllersWithViews(opt =>
 });
 
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+services.AddSingleton<IProductData, InMemoryProductData>();
 
 #endregion
 
