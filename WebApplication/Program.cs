@@ -1,7 +1,10 @@
-﻿using WebApplication.Infrastructure.Conventions;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplication.Infrastructure.Conventions;
 using WebApplication.Infrastructure.Middleware;
 using WebApplication.Services;
 using WebApplication.Services.Interfaces;
+using WebApplication.DAL.Context;
+using Microsoft.Extensions.Configuration;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,9 @@ services.AddControllersWithViews(opt =>
 {
     opt.Conventions.Add(new TestConvention());
 });
+
+services.AddDbContext<WebApplicationDB>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
 services.AddSingleton<IProductData, InMemoryProductData>();
