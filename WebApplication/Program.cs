@@ -5,6 +5,7 @@ using WebApplication.Services;
 using WebApplication.Services.Interfaces;
 using WebApplication.DAL.Context;
 using Microsoft.Extensions.Configuration;
+using WebApplication.Services.InMemory;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,7 @@ await using(var scope = app.Services.CreateAsyncScope())
 {
     var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
 
-    await db_initializer.InitializeAsync(RemoveBefore: false;
+    await db_initializer.InitializeAsync(RemoveBefore: false);
 }
 
 #region Конфигурирование конвейера обработки входящих соединений
