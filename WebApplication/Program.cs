@@ -6,6 +6,7 @@ using WebApplication.Services.Interfaces;
 using WebApplication.DAL.Context;
 using Microsoft.Extensions.Configuration;
 using WebApplication.Services.InMemory;
+using WebApplication.Services.InSQL;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,10 @@ services.AddDbContext<WebApplicationDB>(opt =>
 services.AddTransient<IDbInitializer, DbInitializer>();  
 
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-services.AddSingleton<IProductData, InMemoryProductData>();
+
+//services.AddSingleton<IProductData, InMemoryProductData>();
+
+services.AddScoped<IProductData, SqlProductData>();
 
 #endregion
 
