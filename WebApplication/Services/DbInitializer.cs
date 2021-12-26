@@ -82,6 +82,8 @@ namespace WebApplication.Services
                 await _db.SaveChangesAsync(Cancel);
 
                 await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Sections] OFF", Cancel);
+
+                await _db.Database.CommitTransactionAsync(Cancel);
             }
 
             _Logger.LogInformation("Добавление брендов в БД");
@@ -95,6 +97,8 @@ namespace WebApplication.Services
                 await _db.SaveChangesAsync(Cancel);
 
                 await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Brands] OFF", Cancel);
+
+                await _db.Database.CommitTransactionAsync(Cancel);
             }
 
             _Logger.LogInformation("Добавление товаров в БД");
@@ -108,6 +112,8 @@ namespace WebApplication.Services
                 await _db.SaveChangesAsync(Cancel);
 
                 await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Products] OFF", Cancel);
+
+                await _db.Database.CommitTransactionAsync(Cancel);
             }
 
             _Logger.LogInformation("Инициализация тестовых данных БД выполнена успешно!");
