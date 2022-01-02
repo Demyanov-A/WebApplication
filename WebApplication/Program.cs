@@ -1,7 +1,12 @@
-﻿using WebApplication.Infrastructure.Conventions;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplication.Infrastructure.Conventions;
 using WebApplication.Infrastructure.Middleware;
 using WebApplication.Services;
 using WebApplication.Services.Interfaces;
+using WebApplication.DAL.Context;
+using Microsoft.Extensions.Configuration;
+using WebApplication.Services.InMemory;
+using WebApplication.Services.InSQL;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -14,12 +19,27 @@ services.AddControllersWithViews(opt =>
     opt.Conventions.Add(new TestConvention());
 });
 
+services.AddDbContext<WebApplicationDB>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
+services.AddTransient<IDbInitializer, DbInitializer>();  
+
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-services.AddSingleton<IProductData, InMemoryProductData>();
+
+//services.AddSingleton<IProductData, InMemoryProductData>();
+
+services.AddScoped<IProductData, SqlProductData>();
 
 #endregion
 
 var app = builder.Build(); //Сборка приложения
+
+await using(var scope = app.Services.CreateAsyncScope())
+{
+    var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+
+    await db_initializer.InitializeAsync(RemoveBefore: false);
+}
 
 #region Конфигурирование конвейера обработки входящих соединений
 

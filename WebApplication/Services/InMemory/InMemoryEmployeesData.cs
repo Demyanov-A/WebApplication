@@ -2,7 +2,7 @@
 using WebApplication.Models;
 using WebApplication.Services.Interfaces;
 
-namespace WebApplication.Services
+namespace WebApplication.Services.InMemory
 {
     public class InMemoryEmployeesData : IEmployeesData
     {

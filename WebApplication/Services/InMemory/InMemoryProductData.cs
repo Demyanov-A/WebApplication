@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebApplication.Data;
+﻿using WebApplication.Data;
 using WebApplication.Domain;
 using WebApplication.Domain.Entities;
-using WebApplication.Domain.Entities.Base;
 using WebApplication.Services.Interfaces;
 
-namespace WebApplication.Services
+namespace WebApplication.Services.InMemory
 {
     public class InMemoryProductData : IProductData
     {
