@@ -2,7 +2,7 @@
 
 namespace WebApplication.Domain.Entities.Identity;
 
-public class User : IdentityUser
+public class Role : IdentityRole
 {
 
 }
