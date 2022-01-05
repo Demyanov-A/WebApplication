@@ -10,7 +10,7 @@ using WebApplication.DAL.Context;
 
 namespace WebApplication.DAL.Migrations
 {
-    [DbContext(typeof(WebApplicationDB))]
+    [DbContext(typeof(WebApplicationDb))]
     partial class WebApplicationDBModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -11,7 +11,7 @@ using WebApplication.DAL.Context;
 
 namespace WebApplication.DAL.Migrations
 {
-    [DbContext(typeof(WebApplicationDB))]
+    [DbContext(typeof(WebApplicationDb))]
     [Migration("20211225202352_Initial")]
     partial class Initial
     {
