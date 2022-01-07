@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication.DAL.Context;
 
@@ -11,9 +12,10 @@ using WebApplication.DAL.Context;
 namespace WebApplication.DAL.Migrations
 {
     [DbContext(typeof(WebApplicationDB))]
-    partial class WebApplicationDBModelSnapshot : ModelSnapshot
+    [Migration("20220107213233_UserRoleAddInfo")]
+    partial class UserRoleAddInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
