@@ -1,5 +1,5 @@
 ﻿using WebApplication.Data;
-using WebApplication.Models;
+using WebApplication.Domain.Entities;
 using WebApplication.Services.Interfaces;
 
 namespace WebApplication.Services.InMemory

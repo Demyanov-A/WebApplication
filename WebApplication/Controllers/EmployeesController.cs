@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data;
-using WebApplication.Models;
+using WebApplication.Domain.Entities;
 using WebApplication.Services.Interfaces;
 using WebApplication.ViewModels;
 
