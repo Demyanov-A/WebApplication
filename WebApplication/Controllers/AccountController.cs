@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
 
         public IActionResult Register() => View(new RegisterUserViewModel());
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
             if (!ModelState.IsValid)
@@ -50,7 +50,7 @@ namespace WebApplication.Controllers
 
         public IActionResult Login(string ReturnUrl) => View(new LoginViewModel{ReturnUrl = ReturnUrl});
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel Model)
         {
             if (!ModelState.IsValid)
