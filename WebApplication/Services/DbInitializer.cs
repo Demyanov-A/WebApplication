@@ -20,105 +20,94 @@ namespace WebApplication.Services
             _db = db;
             _Logger = Logger;
         }
+
+        public async Task<bool> RemoveAsync(CancellationToken Cancel = default)
+        {
+            _Logger.LogInformation("Удаление БД...");
+            var result = await _db.Database.EnsureDeletedAsync(Cancel).ConfigureAwait(false);
+
+            if (result)
+                _Logger.LogInformation("Удаление БД выполнено успешно");
+            else
+                _Logger.LogInformation("Удаление БД не требуется (отсутствует)");
+
+            return result;
+        }
+
         public async Task InitializeAsync(bool RemoveBefore = false, CancellationToken Cancel = default)
         {
-            _Logger.LogInformation("Инициализация БД....");
+            _Logger.LogInformation("Инициализация БД...");
 
             if (RemoveBefore)
                 await RemoveAsync(Cancel).ConfigureAwait(false);
 
-            var pending_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel);
+            //await _db.Database.EnsureCreatedAsync();
 
+            var pending_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel);
             if (pending_migrations.Any())
             {
-                _Logger.LogInformation("Выполнение миграции БД....");
+                _Logger.LogInformation("Выполнение миграции БД...");
 
                 await _db.Database.MigrateAsync(Cancel).ConfigureAwait(false);
 
-                _Logger.LogInformation("Выполнение миграции БД выполнено успешно!");
+                _Logger.LogInformation("Выполнение миграции БД выполнено успешно");
             }
 
-            await _db.Database.MigrateAsync(Cancel).ConfigureAwait(false);
-
-            await InitializeProductAsync(Cancel).ConfigureAwait(false);
+            await InitializeProductsAsync(Cancel).ConfigureAwait(false);
 
             await InitializeEmployeesAsync(Cancel).ConfigureAwait(false);
 
-            _Logger.LogInformation("Инициализация БД выполнена успешно!");
+            _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
 
-        public async Task<bool> RemoveAsync(CancellationToken Cancel = default)
+        private async Task InitializeProductsAsync(CancellationToken Cancel)
         {
-            _Logger.LogInformation("Удаление БД.....");
-
-            var result = await _db.Database.EnsureDeletedAsync(Cancel).ConfigureAwait(false);
-
-            if(result)
-                _Logger.LogInformation("БД удалена!");
-            else
-                _Logger.LogInformation("БД не удалена!");
-            
-            return result;
-        }
-
-        private async Task InitializeProductAsync(CancellationToken Cancel)
-        {
-
             if (_db.Sections.Any())
             {
                 _Logger.LogInformation("Инициализация тестовых данных БД не требуется");
-
                 return;
             }
 
-            _Logger.LogInformation("Инициализация тестовых данных БД");
+            _Logger.LogInformation("Инициализация тестовых данных БД ...");
 
-            _Logger.LogInformation("Добавление секций в БД");
+            var sections_pool = TestData.Sections.ToDictionary(s => s.Id);
+            var brands_pool = TestData.Brands.ToDictionary(b => b.Id);
+
+            foreach (var child_section in TestData.Sections.Where(s => s.ParentId is not null))
+                child_section.Parent = sections_pool[(int)child_section.ParentId!];
+
+            foreach (var product in TestData.Products)
+            {
+                product.Section = sections_pool[product.SectionId];
+                if (product.BrandId is { } brand_id)
+                    product.Brand = brands_pool[brand_id];
+
+                product.Id = 0;
+                product.SectionId = 0;
+                product.BrandId = null;
+            }
+
+            foreach (var section in TestData.Sections)
+            {
+                section.Id = 0;
+                section.ParentId = null;
+            }
+
+            foreach (var brand in TestData.Brands)
+                brand.Id = 0;
 
             await using (await _db.Database.BeginTransactionAsync(Cancel))
             {
                 await _db.Sections.AddRangeAsync(TestData.Sections, Cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Sections] ON", Cancel);
-
-                await _db.SaveChangesAsync(Cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Sections] OFF", Cancel);
-
-                await _db.Database.CommitTransactionAsync(Cancel);
-            }
-
-            _Logger.LogInformation("Добавление брендов в БД");
-
-            await using (await _db.Database.BeginTransactionAsync(Cancel))
-            {
                 await _db.Brands.AddRangeAsync(TestData.Brands, Cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Brands] ON", Cancel);
-
-                await _db.SaveChangesAsync(Cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Brands] OFF", Cancel);
-
-                await _db.Database.CommitTransactionAsync(Cancel);
-            }
-
-            _Logger.LogInformation("Добавление товаров в БД");
-
-            await using (await _db.Database.BeginTransactionAsync(Cancel))
-            {
                 await _db.Products.AddRangeAsync(TestData.Products, Cancel);
 
-                await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Products] ON", Cancel);
-
                 await _db.SaveChangesAsync(Cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("Set IDENTITY_INSERT [dbo].[Products] OFF", Cancel);
 
                 await _db.Database.CommitTransactionAsync(Cancel);
             }
 
-            _Logger.LogInformation("Инициализация тестовых данных БД выполнена успешно!");
+            _Logger.LogInformation("Инициализация тестовых данных БД выполнена успешно");
         }
 
         private async Task InitializeEmployeesAsync(CancellationToken Cancel)
