@@ -9,7 +9,7 @@ namespace WebApplication.Controllers
 {
     //[Route("empl/[action]/{Id?}")]
     //[Route("Staff/{action=Index}/{Id?}")]
-    [Authorize]
+    //[Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
@@ -67,7 +67,7 @@ namespace WebApplication.Controllers
             if (model.LastName == "Асама" && model.Name == "Бин" && model.Patronymic == "Ладен")
                 ModelState.AddModelError("", "Террористов на работу не берём!");
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(model);
 
             var employee = new Employee
