@@ -26,7 +26,7 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(Model);
             
             var user = new User
@@ -48,7 +48,34 @@ namespace WebApplication.Controllers
 
         }
 
-        public IActionResult Login() => View();
+        public IActionResult Login(string ReturnUrl) => View(new LoginViewModel{ReturnUrl = ReturnUrl});
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel Model)
+        {
+            if (!ModelState.IsValid)
+                return View(Model);
+
+            var login_result = await _SignInManager.PasswordSignInAsync(
+                Model.UserName,
+                Model.Password,
+                Model.RememberMe,
+                true);
+
+            if (login_result.Succeeded)
+            {
+                //if (Url.IsLocalUrl(Model.ReturnUrl))
+                //    return Redirect(Model.ReturnUrl);
+                //return RedirectToAction("Index", "Home");
+
+                return LocalRedirect(Model.ReturnUrl ?? "/");
+
+            }
+
+            ModelState.AddModelError("","Неверное имя пользователя или пароль! ");
+            return View(Model);
+        }
+
         public IActionResult Logout() => RedirectToAction("Index", "Home");
         public IActionResult AccessDenied() => View();
     }
