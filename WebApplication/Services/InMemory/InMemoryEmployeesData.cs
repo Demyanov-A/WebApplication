@@ -4,6 +4,7 @@ using WebApplication.Services.Interfaces;
 
 namespace WebApplication.Services.InMemory
 {
+    [Obsolete("Используйте WebApplication.Services.InSQL.SqlEmployeesData. Класс InMemoryEmployeesData будет удалён в будущих версиях", false)]
     public class InMemoryEmployeesData : IEmployeesData
     {
         private readonly ILogger<InMemoryEmployeesData> _Logger;

@@ -5,6 +5,7 @@ using WebApplication.Services.Interfaces;
 
 namespace WebApplication.Services.InMemory
 {
+    [Obsolete("Используйте класс WebApplication.Services.InSQL.SqlProductData", error: true)]
     public class InMemoryProductData : IProductData
     {
         public IEnumerable<Brand> GetBrands()

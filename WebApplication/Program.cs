@@ -24,9 +24,11 @@ services.AddControllersWithViews(opt =>
 services.AddDbContext<WebApplicationDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
-services.AddTransient<IDbInitializer, DbInitializer>();  
+services.AddTransient<IDbInitializer, DbInitializer>();
 
-services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+//services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+
+services.AddScoped<IEmployeesData, SqlEmployeesData>();
 
 //services.AddSingleton<IProductData, InMemoryProductData>();
 
