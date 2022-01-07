@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.Services.Interfaces;
@@ -8,6 +9,7 @@ namespace WebApplication.Controllers
 {
     //[Route("empl/[action]/{Id?}")]
     //[Route("Staff/{action=Index}/{Id?}")]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
