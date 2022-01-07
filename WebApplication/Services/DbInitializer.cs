@@ -42,6 +42,8 @@ namespace WebApplication.Services
 
             await InitializeProductAsync(Cancel).ConfigureAwait(false);
 
+            await InitializeEmployeesAsync(Cancel).ConfigureAwait(false);
+
             _Logger.LogInformation("Инициализация БД выполнена успешно!");
         }
 
@@ -117,6 +119,24 @@ namespace WebApplication.Services
             }
 
             _Logger.LogInformation("Инициализация тестовых данных БД выполнена успешно!");
+        }
+
+        private async Task InitializeEmployeesAsync(CancellationToken Cancel)
+        {
+            if (await _db.Employees.AnyAsync(Cancel))
+            {
+                _Logger.LogInformation("Инициализация сотрудников не требуется");
+                return;
+            }
+
+            _Logger.LogInformation("Инициализация сотрудников...");
+            await using var transaction = await _db.Database.BeginTransactionAsync(Cancel);
+
+            await _db.Employees.AddRangeAsync(TestData.Employees, Cancel);
+            await _db.SaveChangesAsync(Cancel);
+
+            await transaction.CommitAsync(Cancel);
+            _Logger.LogInformation("Инициализация сотрудников выполнена успешно");
         }
     }
 }
