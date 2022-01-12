@@ -1,6 +1,6 @@
 ﻿using WebApplication.Domain.Entities;
 using WebApplication.Domain.Entities.Base;
-using WebApplication.Models;
+using WebApplication.Domain.Entities;
 
 namespace WebApplication.Data
 {

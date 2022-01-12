@@ -1,8 +1,9 @@
-﻿namespace WebApplication.Models;
+﻿using WebApplication.Domain.Entities.Base;
 
-public class Employee
+namespace WebApplication.Domain.Entities;
+
+public class Employee : Entity
 {
-    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Patronymic { get; set; }

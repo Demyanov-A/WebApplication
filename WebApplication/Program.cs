@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebApplication.Infrastructure.Conventions;
 using WebApplication.Infrastructure.Middleware;
 using WebApplication.Services;
 using WebApplication.Services.Interfaces;
 using WebApplication.DAL.Context;
 using Microsoft.Extensions.Configuration;
+using WebApplication.Domain.Entities.Identity;
 using WebApplication.Services.InMemory;
 using WebApplication.Services.InSQL;
 
@@ -22,13 +24,50 @@ services.AddControllersWithViews(opt =>
 services.AddDbContext<WebApplicationDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
-services.AddTransient<IDbInitializer, DbInitializer>();  
+services.AddTransient<IDbInitializer, DbInitializer>();
 
-services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+//services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+
+services.AddScoped<IEmployeesData, SqlEmployeesData>();
 
 //services.AddSingleton<IProductData, InMemoryProductData>();
 
 services.AddScoped<IProductData, SqlProductData>();
+
+services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<WebApplicationDB>()
+    .AddDefaultTokenProviders();
+
+services.Configure<IdentityOptions>(opt=>
+{
+#if DEBUG
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireLowercase = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequiredLength = 3;
+    opt.Password.RequiredUniqueChars = 3;
+#endif
+
+    opt.User.RequireUniqueEmail = false;
+    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    opt.Lockout.AllowedForNewUsers = false;
+    opt.Lockout.MaxFailedAccessAttempts = 10;
+    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+});
+
+services.ConfigureApplicationCookie(opt =>
+{
+    opt.Cookie.Name = "WebApplication.GB";
+    opt.Cookie.HttpOnly = true;
+    //opt.Cookie.Expiration = TimeSpan.FromDays(10);
+    opt.ExpireTimeSpan = TimeSpan.FromDays(10);
+    opt.LoginPath = "/Account/Login";
+    opt.LogoutPath = "/Account/Logout";
+    opt.AccessDeniedPath = "/Account/AccessDenied";
+    opt.SlidingExpiration = true;
+
+});
 
 #endregion
 
@@ -54,6 +93,10 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseMiddleware<TestMiddleware>();
 

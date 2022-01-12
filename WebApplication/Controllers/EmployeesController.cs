@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data;
-using WebApplication.Models;
+using WebApplication.Domain.Entities;
 using WebApplication.Services.Interfaces;
 using WebApplication.ViewModels;
 
@@ -8,6 +9,7 @@ namespace WebApplication.Controllers
 {
     //[Route("empl/[action]/{Id?}")]
     //[Route("Staff/{action=Index}/{Id?}")]
+    //[Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
@@ -65,7 +67,7 @@ namespace WebApplication.Controllers
             if (model.LastName == "Асама" && model.Name == "Бин" && model.Patronymic == "Ладен")
                 ModelState.AddModelError("", "Террористов на работу не берём!");
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(model);
 
             var employee = new Employee

@@ -1,4 +1,4 @@
-﻿using WebApplication.Models;
+﻿using WebApplication.Domain.Entities;
 
 namespace WebApplication.Services.Interfaces
 {
