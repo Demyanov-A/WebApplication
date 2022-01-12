@@ -14,10 +14,7 @@
     "inputFiles": [
       "wwwroot/js/contact.js",
       "wwwroot/js/gmaps.js",
-      "wwwroot/js/html5shiv.js",
-      "wwwroot/js/jquery.prettyPhoto.js",
-      "wwwroot/js/jquery.scrollUp.min.js",
-      "wwwroot/js/min.js",
+      "wwwroot/js/main.js",
       "wwwroot/js/price-range.js"
     ],
     "minify": {
