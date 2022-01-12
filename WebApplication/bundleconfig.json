@@ -1,0 +1,30 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.css",
+    "inputFiles": [
+      "wwwroot/css/main.css",
+      "wwwroot/css/animate.css",
+      "wwwroot/css/responsive.css",
+      "wwwroot/css/price-range.css"
+    ],
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "wwwroot/js/site.js",
+    "inputFiles": [
+      "wwwroot/js/contact.js",
+      "wwwroot/js/gmaps.js",
+      "wwwroot/js/html5shiv.js",
+      "wwwroot/js/jquery.prettyPhoto.js",
+      "wwwroot/js/jquery.scrollUp.min.js",
+      "wwwroot/js/min.js",
+      "wwwroot/js/price-range.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true,
+      "gzip": true
+    },
+    "sourceMap": true
+  }
+]
