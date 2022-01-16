@@ -4,12 +4,13 @@ using WebApplication.Data;
 using WebApplication.Domain.Entities;
 using WebApplication.Services.Interfaces;
 using WebApplication.ViewModels;
+using WebApplication.Domain.Entities.Identity;
 
 namespace WebApplication.Controllers
 {
     //[Route("empl/[action]/{Id?}")]
     //[Route("Staff/{action=Index}/{Id?}")]
-    //[Authorize]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
@@ -39,6 +40,7 @@ namespace WebApplication.Controllers
             return View(employee);
         }
 
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Edit(int? id)
         {
             if (id is null)
@@ -62,6 +64,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Edit(EmployeeViewModel model)
         {
             if (model.LastName == "Асама" && model.Name == "Бин" && model.Patronymic == "Ладен")
@@ -89,6 +92,7 @@ namespace WebApplication.Controllers
 
         public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Delete(int id)
         {
             if (id < 0)
@@ -113,6 +117,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult DeleteConfirmed(int id)
         {
             if (!_EmployeesData.Delete(id))
