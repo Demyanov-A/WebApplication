@@ -22,7 +22,7 @@ services.AddControllersWithViews(opt =>
 });
 
 services.AddDbContext<WebApplicationDB>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
 
 services.AddTransient<IDbInitializer, DbInitializer>();
 
