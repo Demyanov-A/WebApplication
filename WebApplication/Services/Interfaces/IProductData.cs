@@ -14,6 +14,8 @@ namespace WebApplication.Services.Interfaces
 
         IEnumerable<Brand> GetBrands();
 
+        Product? GetProductById(int Id);
+
         IEnumerable<Product> GetProducts(ProductFilter? Filter = null);
     }
 }

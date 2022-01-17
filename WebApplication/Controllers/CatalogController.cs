@@ -2,6 +2,8 @@
 using WebApplication.Domain;
 using WebApplication.Services.Interfaces;
 using WebApplication.ViewModels;
+using WebApplication.Infrastructure.Mapping;
+using System.Globalization;
 
 namespace WebApplication.Controllers
 {
@@ -25,18 +27,22 @@ namespace WebApplication.Controllers
             {
                 BrandId = BrandId,
                 SectionId = SectionId,
-                Products = products
-                    .OrderBy(p => p.Order)
-                    .Select(p => new ProductViewModel
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Price = p.Price,
-                        ImageURL = p.ImageURL,
-                    }),
+                Products = products.OrderBy(p => p.Order).ToView(),
             };
 
             return View(catalog_model);
+        }
+
+        public IActionResult Details(int Id)
+        {
+            var product = _ProductData.GetProductById(Id);
+
+            //CultureInfo.CurrentUICulture = 
+            //    CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
+            if (product is null)
+                return NotFound();
+
+            return View(product.ToView());
         }
     }
 }

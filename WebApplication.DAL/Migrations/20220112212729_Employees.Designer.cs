@@ -12,7 +12,7 @@ using WebApplication.DAL.Context;
 namespace WebApplication.DAL.Migrations
 {
     [DbContext(typeof(WebApplicationDB))]
-    [Migration("20220107223907_Employees")]
+    [Migration("20220112212729_Employees")]
     partial class Employees
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,10 +190,6 @@ namespace WebApplication.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -216,10 +212,6 @@ namespace WebApplication.DAL.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AboutMyself")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");

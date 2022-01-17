@@ -22,7 +22,7 @@ namespace WebApplication.Domain.Entities
         public int? BrandId { get; set; }
 
         [ForeignKey((nameof(BrandId)))]
-        public Brand Brand { get; set; }
+        public Brand? Brand { get; set; }
         public string ImageURL { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]

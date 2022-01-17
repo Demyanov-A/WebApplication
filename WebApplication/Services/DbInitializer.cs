@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.DAL.Context;
 using WebApplication.Data;
+using WebApplication.Domain.Entities.Identity;
 using WebApplication.Services.Interfaces;
 
 namespace WebApplication.Services
@@ -14,11 +17,15 @@ namespace WebApplication.Services
     {
         private readonly WebApplicationDB _db;
         private readonly ILogger<DbInitializer> _Logger;
+        private readonly UserManager<User> _UserManager;
+        private readonly RoleManager<Role> _RoleManager;
 
-        public DbInitializer(WebApplicationDB db, ILogger<DbInitializer> Logger)
+        public DbInitializer(WebApplicationDB db, ILogger<DbInitializer> Logger, UserManager<User> UserManager, RoleManager<Role> RoleManager)
         {
             _db = db;
             _Logger = Logger;
+            _UserManager = UserManager;
+            _RoleManager = RoleManager;
         }
 
         public async Task<bool> RemoveAsync(CancellationToken Cancel = default)
@@ -56,6 +63,8 @@ namespace WebApplication.Services
             await InitializeProductsAsync(Cancel).ConfigureAwait(false);
 
             await InitializeEmployeesAsync(Cancel).ConfigureAwait(false);
+
+            await InitializeIdentityAsync(Cancel).ConfigureAwait(false);
 
             _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
@@ -128,6 +137,59 @@ namespace WebApplication.Services
 
             await transaction.CommitAsync(Cancel);
             _Logger.LogInformation("Инициализация сотрудников выполнена успешно");
+        }
+
+        private async Task InitializeIdentityAsync(CancellationToken Cancel)
+        {
+            _Logger.LogInformation("Инициализация данных системы Identity");
+
+            var timer = Stopwatch.StartNew();
+
+            async Task CheckRole(string RoleName)
+            {
+                if (await _RoleManager.RoleExistsAsync(RoleName))
+                    _Logger.LogInformation("Роль {0} существует в БД. {1} c", RoleName, timer.Elapsed.TotalSeconds);
+                else
+                {
+                    _Logger.LogInformation("Роль {0} не существует в БД. {1} c", RoleName, timer.Elapsed.TotalSeconds);
+
+                    await _RoleManager.CreateAsync(new Role { Name = RoleName });
+
+                    _Logger.LogInformation("Роль {0} создана. {1} c", RoleName, timer.Elapsed.TotalSeconds);
+                }
+            }
+
+            await CheckRole(Role.Administrators);
+            await CheckRole(Role.Users);
+
+            if (await _UserManager.FindByNameAsync(User.Administrator) is null)
+            {
+                _Logger.LogInformation("Пользователь {0} отсутствует в БД. Создаю... {1} c", User.Administrator, timer.Elapsed.TotalSeconds);
+
+                var admin = new User
+                {
+                    UserName = User.Administrator,
+                };
+
+                var creation_result = await _UserManager.CreateAsync(admin, User.DefaultAdminPassword);
+                if (creation_result.Succeeded)
+                {
+                    _Logger.LogInformation("Пользователь {0} создан успешно. Наделяю его правами администратора... {1} c", User.Administrator, timer.Elapsed.TotalSeconds);
+
+                    await _UserManager.AddToRoleAsync(admin, Role.Administrators);
+
+                    _Logger.LogInformation("Пользователь {0} наделён правами администратора. {1} c", User.Administrator, timer.Elapsed.TotalSeconds);
+                }
+                else
+                {
+                    var errors = creation_result.Errors.Select(err => err.Description);
+                    _Logger.LogError("Учётная запись администратора не создана. Ошибки:{0}", string.Join(", ", errors));
+
+                    throw new InvalidOperationException($"Невозможно создать пользователя {User.Administrator} по причине: {string.Join(", ", errors)}");
+                }
+            }
+
+            _Logger.LogInformation("Данные системы Identity успешно добавлены в БД за {0} c", timer.Elapsed.TotalSeconds);
         }
     }
 }
