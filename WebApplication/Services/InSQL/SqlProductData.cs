@@ -19,11 +19,16 @@ namespace WebApplication.Services.InSQL
         {
             IQueryable<Product> query = _db.Products;
 
-            if (Filter?.SectionId != null)
-                query = query.Where(p => p.SectionId == Filter.SectionId);
+            if (Filter?.Ids?.Length > 0)
+                query = query.Where(product => Filter.Ids.Contains(product.Id));
+            else
+            {
+                if (Filter?.SectionId is { } section_id)
+                    query = query.Where(p => p.SectionId == section_id);
 
-            if (Filter?.BrandId != null)
-                query = query.Where(p => p.BrandId == Filter.BrandId);
+                if (Filter?.BrandId is { } brand_id)
+                    query = query.Where(p => p.BrandId == brand_id);
+            }
 
             return query;
         }

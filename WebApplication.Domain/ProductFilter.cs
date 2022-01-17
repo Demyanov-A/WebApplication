@@ -10,5 +10,7 @@ namespace WebApplication.Domain
     {
         public int? SectionId { get; set; }
         public int? BrandId { get; set; }
+
+        public int[]? Ids { get; set; }
     }
 }

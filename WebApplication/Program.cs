@@ -7,6 +7,7 @@ using WebApplication.Services.Interfaces;
 using WebApplication.DAL.Context;
 using Microsoft.Extensions.Configuration;
 using WebApplication.Domain.Entities.Identity;
+using WebApplication.Services.InCookies;
 using WebApplication.Services.InSQL;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
@@ -32,6 +33,8 @@ services.AddScoped<IEmployeesData, SqlEmployeesData>();
 //services.AddSingleton<IProductData, InMemoryProductData>();
 
 services.AddScoped<IProductData, SqlProductData>();
+
+services.AddScoped<ICartService, InCookiesCartService>();
 
 services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<WebApplicationDB>()
