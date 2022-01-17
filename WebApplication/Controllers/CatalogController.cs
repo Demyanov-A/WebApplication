@@ -3,6 +3,7 @@ using WebApplication.Domain;
 using WebApplication.Services.Interfaces;
 using WebApplication.ViewModels;
 using WebApplication.Infrastructure.Mapping;
+using System.Globalization;
 
 namespace WebApplication.Controllers
 {
@@ -36,6 +37,8 @@ namespace WebApplication.Controllers
         {
             var product = _ProductData.GetProductById(Id);
 
+            //CultureInfo.CurrentUICulture = 
+            //    CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
             if (product is null)
                 return NotFound();
 
