@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WebApplication.DAL.Context;
+using Microsoft.EntityFrameworkCore;
 using WebApplication.DAL.Context;
 using WebApplication.Domain;
 using WebApplication.Domain.Entities;
@@ -30,6 +27,11 @@ namespace WebApplication.Services.InSQL
 
             return query;
         }
+
+        public Product? GetProductById(int Id) => _db.Products
+            .Include(p => p.Brand)
+            .Include(p => p.Section)
+            .FirstOrDefault(p => p.Id == Id);
 
         public IEnumerable<Section> GetSections() => _db.Sections;
     }

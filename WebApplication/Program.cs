@@ -7,7 +7,6 @@ using WebApplication.Services.Interfaces;
 using WebApplication.DAL.Context;
 using Microsoft.Extensions.Configuration;
 using WebApplication.Domain.Entities.Identity;
-using WebApplication.Services.InMemory;
 using WebApplication.Services.InSQL;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
