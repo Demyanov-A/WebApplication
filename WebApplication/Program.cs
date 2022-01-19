@@ -79,7 +79,7 @@ await using(var scope = app.Services.CreateAsyncScope())
 {
     var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
 
-    await db_initializer.InitializeAsync(RemoveBefore: false);
+    await db_initializer.InitializeAsync(RemoveBefore: false).ConfigureAwait(true);
 }
 
 #region Конфигурирование конвейера обработки входящих соединений
@@ -104,9 +104,17 @@ app.UseMiddleware<TestMiddleware>();
 
 app.UseWelcomePage("/welcome");
 
-app.MapControllerRoute(
-    name: "default", 
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 #endregion
 
 app.Run();//Запуск приложения
