@@ -17,12 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApplication.DAL.SqlLite\WebApplication.DAL.SqLite.csproj" />
-    <ProjectReference Include="..\WebApplication.DAL\WebApplication.DAL.csproj" />
-    <ProjectReference Include="..\WebApplication.Domain\WebApplication.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="wwwroot\css\prettyPhoto.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -31,6 +25,12 @@
 
 	<ItemGroup>
 	  <None Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Common\WebApplication.Domain\WebApplication.Domain.csproj" />
+	  <ProjectReference Include="..\..\Data\WebApplication.DAL.SqlLite\WebApplication.DAL.SqLite.csproj" />
+	  <ProjectReference Include="..\..\Data\WebApplication.DAL\WebApplication.DAL.csproj" />
 	</ItemGroup>
 
 </Project>
