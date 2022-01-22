@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WebApplication.DAL.SqlLite\WebApplication.DAL.SqLite.csproj" />
     <ProjectReference Include="..\WebApplication.DAL\WebApplication.DAL.csproj" />
     <ProjectReference Include="..\WebApplication.Domain\WebApplication.Domain.csproj" />
   </ItemGroup>
