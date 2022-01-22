@@ -40,7 +40,7 @@ namespace WebApplication.Areas.Admin.Controllers
                 Section = product.Section.Name,
                 Brand = product.Brand?.Name,
                 BrandId = product.BrandId,
-                ImageUrl = product.ImageURL,
+                ImageURL = product.ImageURL,
                 Price = product.Price,
             });
         }
@@ -89,7 +89,7 @@ namespace WebApplication.Areas.Admin.Controllers
                 Section = product.Section.Name,
                 Brand = product.Brand?.Name,
                 BrandId = product.BrandId,
-                ImageUrl = product.ImageURL,
+                ImageURL = product.ImageURL,
                 Price = product.Price,
             });
         }
