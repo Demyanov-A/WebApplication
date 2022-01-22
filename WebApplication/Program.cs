@@ -34,6 +34,8 @@ services.AddScoped<IEmployeesData, SqlEmployeesData>();
 
 services.AddScoped<IProductData, SqlProductData>();
 
+services.AddScoped<IOrderService, SqlOrderService>();
+
 services.AddScoped<ICartService, InCookiesCartService>();
 
 services.AddIdentity<User, Role>()
