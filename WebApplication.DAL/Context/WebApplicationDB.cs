@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Domain.Entities;
 using WebApplication.Domain.Entities.Identity;
+using WebApplication.Domain.Entities.Order;
 
 namespace WebApplication.DAL.Context
 {
@@ -11,6 +12,7 @@ namespace WebApplication.DAL.Context
         public DbSet<Section> Sections { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public WebApplicationDB(DbContextOptions<WebApplicationDB> options) : base(options)
         {
             
