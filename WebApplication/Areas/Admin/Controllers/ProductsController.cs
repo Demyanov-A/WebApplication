@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication.Areas.Admin.ViewModels;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Services.Interfaces;
 
@@ -27,5 +23,90 @@ namespace WebApplication.Areas.Admin.Controllers
             var products = _ProductData.GetProducts();
             return View(products);
         }
+
+        public IActionResult Edit(int id)
+        {
+            var product = _ProductData.GetProductById(id);
+
+            if (product is null)
+                return NotFound();
+
+            return View(new EditProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Order = product.Order,
+                SectionId = product.SectionId,
+                Section = product.Section.Name,
+                Brand = product.Brand?.Name,
+                BrandId = product.BrandId,
+                ImageUrl = product.ImageURL,
+                Price = product.Price,
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditProductViewModel Model)
+        {
+            if (!ModelState.IsValid)
+                return View(Model);
+
+            var product = _ProductData.GetProductById(Model.Id);
+            if (product is null)
+                return NotFound();
+
+            //product.Name = Model.Name;
+            //product.Order = Model.Order;
+            //product.Price = Model.Price;
+            //product.ImageUrl = Model.ImageUrl;
+
+            //var brand = _ProductData.GetBrandById(Model.BrandId ?? -1);
+            //var section = _ProductData.GetSectionById(Model.SectionId);
+
+            //product.Brand = brand;
+            //product.Section = section;
+
+            //_ProductData.Update(product);
+
+            // отредактировать product используя сервис _ProductData
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var product = _ProductData.GetProductById(id);
+
+            if (product is null)
+                return NotFound();
+
+            return View(new EditProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Order = product.Order,
+                SectionId = product.SectionId,
+                Section = product.Section.Name,
+                Brand = product.Brand?.Name,
+                BrandId = product.BrandId,
+                ImageUrl = product.ImageURL,
+                Price = product.Price,
+            });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int Id)
+        {
+            var product = _ProductData.GetProductById(Id);
+
+            if (product is null)
+                return NotFound();
+
+            //_ProductData.Delete(product);
+            // удалить product используя сервис _ProductData
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
