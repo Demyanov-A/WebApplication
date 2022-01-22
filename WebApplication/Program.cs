@@ -21,6 +21,26 @@ services.AddControllersWithViews(opt =>
     opt.Conventions.Add(new TestConvention());
 });
 
+var database_type = builder.Configuration["DataBase"];
+
+switch (database_type)
+{
+    default: throw new InvalidOperationException($"DataBase type {database_type} not supported");
+    case "SqLite":
+        services.AddDbContext<WebApplicationDB>(opt =>
+            opt.UseSqlite(builder.Configuration.GetConnectionString("SqLite"),
+                o => o.MigrationsAssembly("WebApplication.DAL.SqLite")));
+        break;
+    case "SqlServer":
+        services.AddDbContext<WebApplicationDB>(opt =>
+            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+        break;
+    case "SqlServerLocalDB":
+        services.AddDbContext<WebApplicationDB>(opt =>
+            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
+        break;
+}
+
 services.AddDbContext<WebApplicationDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
 
