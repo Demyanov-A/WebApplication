@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace WebApplication.Domain.ViewModels;
 
-namespace WebApplication.ViewModels
+public class CatalogViewModel
 {
-    public class CatalogViewModel
-    {
-        public int? BrandId { get; set; }
-        public int? SectionId { get; set; }
-        public IEnumerable<ProductViewModel?> Products { get; set; } = null;
-    }
+    public int? BrandId { get; set; }
+    public int? SectionId { get; set; }
+    public IEnumerable<ProductViewModel?> Products { get; set; } = null;
 }

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication.Data;
 using WebApplication.Domain.Entities;
 using WebApplication.Services.Interfaces;
-using WebApplication.ViewModels;
 using WebApplication.Domain.Entities.Identity;
+using WebApplication.Domain.ViewModels;
 
 namespace WebApplication.Controllers
 {

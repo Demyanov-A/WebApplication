@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication.DAL.Context;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Domain.Entities.Order;
+using WebApplication.Domain.ViewModels;
 using WebApplication.Services.Interfaces;
-using WebApplication.ViewModels;
 
 namespace WebApplication.Services.InSQL
 {

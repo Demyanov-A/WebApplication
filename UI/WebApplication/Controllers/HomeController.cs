@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication.Services.Interfaces;
-using WebApplication.ViewModels;
 using WebApplication.Infrastructure.Mapping;
 
 namespace WebApplication.Controllers;

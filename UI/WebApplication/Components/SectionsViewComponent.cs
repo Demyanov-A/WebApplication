@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MessagePack.Resolvers;
+using WebApplication.Domain.ViewModels;
 using WebApplication.Services.Interfaces;
-using WebApplication.ViewModels;
 
 namespace WebApplication.Components
 {

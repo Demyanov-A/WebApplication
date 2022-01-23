@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace WebApplication.Domain.ViewModels;
 
-namespace WebApplication.ViewModels
+public class CartOrderViewModel
 {
-    public class CartOrderViewModel
-    {
-        public CartViewModel Cart { get; set; } = null!;
+    public CartViewModel Cart { get; set; } = null!;
 
-        public OrderViewModel Order { get; set; } = new();
-    }
+    public OrderViewModel Order { get; set; } = new();
 }

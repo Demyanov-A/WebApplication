@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApplication.Domain.Entities;
-using WebApplication.ViewModels;
+using WebApplication.Domain.ViewModels;
 
 namespace WebApplication.Infrastructure.Mapping
 {

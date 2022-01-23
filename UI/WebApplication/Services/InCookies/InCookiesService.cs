@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using WebApplication.Domain.Entities;
+using WebApplication.Domain.ViewModels;
 using WebApplication.Infrastructure.Mapping;
 using WebApplication.Services.Interfaces;
-using WebApplication.ViewModels;
 
 namespace WebApplication.Services.InCookies
 {
