@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WebApplication.Interfaces.TestAPI;
@@ -15,16 +16,46 @@ namespace WebApplication.WebAPI.Clients.Values
 
         }
 
-        public IEnumerable<string> GetValues() { throw new NotImplementedException(); }
+        public IEnumerable<string> GetValues()
+        {
+            var response = Http.GetAsync(Address).Result;
+            if (response.IsSuccessStatusCode)
+                return response.Content.ReadFromJsonAsync<IEnumerable<string>>().Result!;
 
-        public int Count() { throw new NotImplementedException(); }
+            return Enumerable.Empty<string>();
+        }
 
-        public string GetById(int Id) { throw new NotImplementedException(); }
+        public int Count()
+        {
+            var response = Http.GetAsync($"{Address}/count").Result;
+            if (response.IsSuccessStatusCode)
+                return response.Content.ReadFromJsonAsync<int>().Result!;
+            return -1;
+        }
 
-        public void Add(string Value) { throw new NotImplementedException(); }
+        public string? GetById(int Id)
+        {
+            var response = Http.GetAsync($"{Address}/{Id}").Result;
+            if (response.IsSuccessStatusCode)
+                return response.Content.ReadFromJsonAsync<string>().Result!;
+            return null;
+        }
+        public void Add(string Value)
+        {
+            var response = Http.PostAsJsonAsync(Address, Value).Result;
+            response.EnsureSuccessStatusCode();
+        }
 
-        public void Edit(int Id, string Value) { throw new NotImplementedException(); }
+        public void Edit(int Id, string Value)
+        {
+            var response = Http.PutAsJsonAsync($"{Address}/{Id}", Value).Result;
+            response.EnsureSuccessStatusCode();
+        }
 
-        public bool Delete(int Id) { throw new NotImplementedException(); }
+        public bool Delete(int Id)
+        {
+            var response = Http.DeleteAsync($"{Address}/{Id}").Result;
+            return response.IsSuccessStatusCode;
+        }
     }
 }
