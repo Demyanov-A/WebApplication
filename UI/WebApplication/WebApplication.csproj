@@ -31,6 +31,7 @@
 	  <ProjectReference Include="..\..\Common\WebApplication.Domain\WebApplication.Domain.csproj" />
 	  <ProjectReference Include="..\..\Data\WebApplication.DAL.SqlLite\WebApplication.DAL.SqLite.csproj" />
 	  <ProjectReference Include="..\..\Data\WebApplication.DAL\WebApplication.DAL.csproj" />
+	  <ProjectReference Include="..\..\Services\WebApplication.WebAPI.Clients\WebApplication.WebAPI.Clients.csproj" />
 	  <ProjectReference Include="..\..\WebApplication.Interfaces\WebApplication.Interfaces.csproj" />
 	  <ProjectReference Include="..\..\WebApplication.Services\WebApplication.Services.csproj" />
 	</ItemGroup>
