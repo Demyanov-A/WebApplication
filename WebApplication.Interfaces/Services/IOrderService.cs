@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebApplication.Domain.Entities.Order;
+﻿using WebApplication.Domain.Entities.Order;
 using WebApplication.Domain.ViewModels;
 
-namespace WebApplication.Services.Interfaces
+namespace WebApplication.Interfaces.Services
 {
     public interface IOrderService
     {

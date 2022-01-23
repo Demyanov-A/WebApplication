@@ -1,6 +1,6 @@
 ﻿using WebApplication.Domain.Entities;
 
-namespace WebApplication.Services.Interfaces
+namespace WebApplication.Interfaces.Services
 {
     public interface IEmployeesData
     {

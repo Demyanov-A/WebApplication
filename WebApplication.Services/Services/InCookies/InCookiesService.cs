@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using WebApplication.Domain.Entities;
 using WebApplication.Domain.ViewModels;
-using WebApplication.Infrastructure.Mapping;
-using WebApplication.Services.Interfaces;
+using WebApplication.Interfaces.Services;
+using WebApplication.Services.Mapping;
 
-namespace WebApplication.Services.InCookies
+namespace WebApplication.Services.Services.InCookies
 {
     public class InCookiesCartService : ICartService
     {

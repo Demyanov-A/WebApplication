@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Areas.Admin.ViewModels;
 using WebApplication.Domain.Entities.Identity;
-using WebApplication.Services.Interfaces;
+using WebApplication.Interfaces.Services;
 
 namespace WebApplication.Areas.Admin.Controllers
 {

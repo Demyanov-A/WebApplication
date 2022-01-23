@@ -1,8 +1,6 @@
 ﻿using WebApplication.Domain.Entities;
-using WebApplication.Domain.Entities.Base;
-using WebApplication.Domain.Entities;
 
-namespace WebApplication.Data
+namespace WebApplication.Services.Data
 {
     public static class TestData
     {

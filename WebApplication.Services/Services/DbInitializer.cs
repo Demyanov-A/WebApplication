@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebApplication.DAL.Context;
-using WebApplication.Data;
 using WebApplication.Domain.Entities.Identity;
-using WebApplication.Services.Interfaces;
+using WebApplication.Interfaces.Services;
+using WebApplication.Services.Data;
 
-namespace WebApplication.Services
+namespace WebApplication.Services.Services
 {
     public class DbInitializer : IDbInitializer
     {

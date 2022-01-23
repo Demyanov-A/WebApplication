@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.DAL.Context;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Domain.Entities.Order;
 using WebApplication.Domain.ViewModels;
-using WebApplication.Services.Interfaces;
+using WebApplication.Interfaces.Services;
 
-namespace WebApplication.Services.InSQL
+namespace WebApplication.Services.Services.InSQL
 {
     public class SqlOrderService : IOrderService
     {

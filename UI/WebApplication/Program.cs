@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication.Infrastructure.Conventions;
 using WebApplication.Infrastructure.Middleware;
 using WebApplication.Services;
-using WebApplication.Services.Interfaces;
 using WebApplication.DAL.Context;
 using Microsoft.Extensions.Configuration;
 using WebApplication.Domain.Entities.Identity;
-using WebApplication.Services.InCookies;
-using WebApplication.Services.InSQL;
+using WebApplication.Interfaces.Services;
+using WebApplication.Services.Services;
+using WebApplication.Services.Services.InCookies;
+using WebApplication.Services.Services.InSQL;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 

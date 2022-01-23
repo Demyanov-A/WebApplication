@@ -1,11 +1,10 @@
-﻿using WebApplication.DAL.Context;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApplication.DAL.Context;
 using WebApplication.Domain;
 using WebApplication.Domain.Entities;
-using WebApplication.Services.Interfaces;
+using WebApplication.Interfaces.Services;
 
-namespace WebApplication.Services.InSQL
+namespace WebApplication.Services.Services.InSQL
 {
     public class SqlProductData : IProductData
     {

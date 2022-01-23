@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication.Services.Interfaces;
-using WebApplication.Infrastructure.Mapping;
+using WebApplication.Interfaces.Services;
+using WebApplication.Services.Mapping;
 
 namespace WebApplication.Controllers;
 

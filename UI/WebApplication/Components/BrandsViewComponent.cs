@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain.ViewModels;
-using WebApplication.Services.Interfaces;
+using WebApplication.Interfaces.Services;
 
 namespace WebApplication.Components
 {

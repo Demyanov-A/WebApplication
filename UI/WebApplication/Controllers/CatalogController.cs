@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain;
-using WebApplication.Services.Interfaces;
-using WebApplication.Infrastructure.Mapping;
 using System.Globalization;
 using WebApplication.Domain.ViewModels;
+using WebApplication.Interfaces.Services;
+using WebApplication.Services.Mapping;
 
 namespace WebApplication.Controllers
 {

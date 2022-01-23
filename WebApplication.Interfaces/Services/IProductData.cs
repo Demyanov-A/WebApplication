@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebApplication.Domain;
+﻿using WebApplication.Domain;
 using WebApplication.Domain.Entities;
 
-namespace WebApplication.Services.Interfaces
+namespace WebApplication.Interfaces.Services
 {
     public interface IProductData
     {

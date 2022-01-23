@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication.Data;
 using WebApplication.Domain.Entities;
-using WebApplication.Services.Interfaces;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Domain.ViewModels;
+using WebApplication.Interfaces.Services;
 
 namespace WebApplication.Controllers
 {
