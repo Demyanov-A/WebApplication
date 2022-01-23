@@ -7,9 +7,11 @@ using WebApplication.DAL.Context;
 using Microsoft.Extensions.Configuration;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Interfaces.Services;
+using WebApplication.Interfaces.TestAPI;
 using WebApplication.Services.Services;
 using WebApplication.Services.Services.InCookies;
 using WebApplication.Services.Services.InSQL;
+using WebApplication.WebAPI.Clients.Values;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -58,6 +60,10 @@ services.AddScoped<IProductData, SqlProductData>();
 services.AddScoped<IOrderService, SqlOrderService>();
 
 services.AddScoped<ICartService, InCookiesCartService>();
+
+var configuration = builder.Configuration;
+services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
 
 services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<WebApplicationDB>()
