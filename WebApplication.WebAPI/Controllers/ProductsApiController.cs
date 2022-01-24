@@ -22,7 +22,7 @@ namespace WebApplication.WebAPI.Controllers
         public IActionResult GetSections()
         {
             var sections = _ProductData.GetSections();
-            return Ok(sections);
+            return Ok(sections.ToDTO());
         }
 
         [HttpGet("sections/{Id}")] // GET -> http://localhost:5001/api/products/sections/5
@@ -32,14 +32,14 @@ namespace WebApplication.WebAPI.Controllers
             if (section is null)
                 return NotFound();
 
-            return Ok(section);
+            return Ok(section.ToDTO());
         }
 
         [HttpGet("brands")] // GET -> http://localhost:5001/api/products/brands
         public IActionResult GetBrands()
         {
             var brands = _ProductData.GetBrands();
-            return Ok(brands);
+            return Ok(brands.ToDTO());
         }
 
         [HttpGet("brands/{Id}")] // GET -> http://localhost:5001/api/products/brands/5
@@ -49,14 +49,14 @@ namespace WebApplication.WebAPI.Controllers
             if (brand is null)
                 return NotFound();
 
-            return Ok(brand);
+            return Ok(brand.ToDTO());
         }
 
         [HttpPost]
         public IActionResult GetProducts(ProductFilter? Filter = null)
         {
             var products = _ProductData.GetProducts(Filter);
-            return Ok(products);
+            return Ok(products.ToDTO());
         }
 
         [HttpGet("{Id}")]
@@ -66,14 +66,14 @@ namespace WebApplication.WebAPI.Controllers
             if (product is null)
                 return NotFound();
 
-            return Ok(product);
+            return Ok(product.ToDTO());
         }
 
         [HttpPost("new/{Name}")]
         public IActionResult CreateProduct(CreateProductDTO Model)
         {
             var product = _ProductData.CreateProduct(Model.Name, Model.Order, Model.Price, Model.ImageUrl, Model.Section, Model.Brand);
-            return CreatedAtAction(nameof(GetProductGyId), new {product.Id}, product);
+            return CreatedAtAction(nameof(GetProductGyId), new {product.Id}, product.ToDTO());
         }
     }
 }

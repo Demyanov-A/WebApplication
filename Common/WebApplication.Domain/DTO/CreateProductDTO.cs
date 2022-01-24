@@ -16,3 +16,4 @@ namespace WebApplication.Domain.DTO
         public string? Brand { get; set; }
 
     }
+}
