@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain;
+using WebApplication.Domain.DTO;
 using WebApplication.Interfaces.Services;
 
 namespace WebApplication.WebAPI.Controllers
@@ -69,10 +70,9 @@ namespace WebApplication.WebAPI.Controllers
         }
 
         [HttpPost("new/{Name}")]
-        public IActionResult CreateProduct(string Name, int Order, decimal Price, string ImageUrl, string Section,
-            string? Brand = null)
+        public IActionResult CreateProduct(CreateProductDTO Model)
         {
-            var product = _ProductData.CreateProduct(Name, Order, Price, ImageUrl, Section, Brand);
+            var product = _ProductData.CreateProduct(Model.Name, Model.Order, Model.Price, Model.ImageUrl, Model.Section, Model.Brand);
             return CreatedAtAction(nameof(GetProductGyId), new {product.Id}, product);
         }
     }
