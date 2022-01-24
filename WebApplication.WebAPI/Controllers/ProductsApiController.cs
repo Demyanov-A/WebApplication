@@ -12,7 +12,7 @@ namespace WebApplication.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/products")]
-    public class ProductsApiController : Controller
+    public class ProductsApiController : ControllerBase
     {
         private readonly IProductData _ProductData;
 
