@@ -11,6 +11,9 @@ using WebApplication.Interfaces.TestAPI;
 using WebApplication.Services.Services;
 using WebApplication.Services.Services.InCookies;
 using WebApplication.Services.Services.InSQL;
+using WebApplication.WebAPI.Clients.Employees;
+using WebApplication.WebAPI.Clients.Orders;
+using WebApplication.WebAPI.Clients.Products;
 using WebApplication.WebAPI.Clients.Values;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
@@ -51,19 +54,31 @@ services.AddTransient<IDbInitializer, DbInitializer>();
 
 //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
 
-services.AddScoped<IEmployeesData, SqlEmployeesData>();
+//services.AddScoped<IEmployeesData, SqlEmployeesData>();
 
 //services.AddSingleton<IProductData, InMemoryProductData>();
 
-services.AddScoped<IProductData, SqlProductData>();
+//services.AddScoped<IProductData, SqlProductData>();
 
-services.AddScoped<IOrderService, SqlOrderService>();
+//services.AddScoped<IOrderService, SqlOrderService>();
 
 services.AddScoped<ICartService, InCookiesCartService>();
 
 var configuration = builder.Configuration;
-services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
+//services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+//services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+//services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+//services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+services.AddHttpClient("WebApplicationAPI", client => client.BaseAddress = new(configuration["WebAPI"]))
+    .AddTypedClient<IValuesService, ValuesClient>()
+    .AddTypedClient<IEmployeesData, EmployeesClient>()
+    .AddTypedClient<IProductData, ProductsClient>()
+    .AddTypedClient<IOrderService, OrdersClient>();
 
 services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<WebApplicationDB>()
