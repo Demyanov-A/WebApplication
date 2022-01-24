@@ -5,7 +5,7 @@ using WebApplication.Interfaces.Services;
 
 namespace WebApplication.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/employees")]
     [ApiController]
     public class EmployeesApiController : ControllerBase
     {
