@@ -21,17 +21,19 @@ services.AddSwaggerGen();
 var database_type = builder.Configuration["Database"];
 switch (database_type)
 {
-    default: throw new InvalidOperationException($"Тип БД {database_type} не поддерживается");
-
+    default: throw new InvalidOperationException($"DataBase type {database_type} not supported");
+    case "SqLite":
+        services.AddDbContext<WebApplicationDB>(opt =>
+            opt.UseSqlite(builder.Configuration.GetConnectionString("SqLite"),
+                o => o.MigrationsAssembly("WebApplication.DAL.SqLite")));
+        break;
     case "SqlServer":
         services.AddDbContext<WebApplicationDB>(opt =>
             opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
         break;
-
-    case "Sqlite":
+    case "SqlServerLocalDB":
         services.AddDbContext<WebApplicationDB>(opt =>
-            opt.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"),
-                o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
         break;
 }
 
