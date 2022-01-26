@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using WebApplication.Interfaces;
 using WebApplication.Interfaces.TestAPI;
 using WebApplication.WebAPI.Clients.Base;
 
@@ -11,7 +12,7 @@ namespace WebApplication.WebAPI.Clients.Values
 {
     public class ValuesClient : BaseClient, IValuesService
     {
-        public ValuesClient(HttpClient Client) : base(Client, "api/values")
+        public ValuesClient(HttpClient Client) : base(Client, WebAPIAddresses.Values)
         {
 
         }

@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain.Entities;
+using WebApplication.Interfaces;
 using WebApplication.Interfaces.Services;
 
 namespace WebApplication.WebAPI.Controllers
 {
-    [Route("api/employees")]
+    [Route(WebAPIAddresses.Employees)]
     [ApiController]
     public class EmployeesApiController : ControllerBase
     {

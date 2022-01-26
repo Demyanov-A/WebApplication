@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebApplication.Domain;
 using WebApplication.Domain.DTO;
 using WebApplication.Domain.Entities;
+using WebApplication.Interfaces;
 using WebApplication.Interfaces.Services;
 using WebApplication.WebAPI.Clients.Base;
 
@@ -14,7 +15,7 @@ namespace WebApplication.WebAPI.Clients.Products
 {
     public class ProductsClient : BaseClient, IProductData
     {
-        public ProductsClient(HttpClient Client) : base(Client, "api/products")
+        public ProductsClient(HttpClient Client) : base(Client, WebAPIAddresses.Products)
         {
         }
 

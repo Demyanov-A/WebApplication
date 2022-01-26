@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WebApplication.Domain.Entities;
+using WebApplication.Interfaces;
 using WebApplication.Interfaces.Services;
 using WebApplication.WebAPI.Clients.Base;
 
@@ -12,7 +13,7 @@ namespace WebApplication.WebAPI.Clients.Employees
 {
     public class EmployeesClient : BaseClient, IEmployeesData
     {
-        public EmployeesClient(HttpClient Client) : base(Client, "api/employees")
+        public EmployeesClient(HttpClient Client) : base(Client, WebAPIAddresses.Employees)
         {
         }
 
