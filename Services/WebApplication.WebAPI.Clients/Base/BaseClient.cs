@@ -50,5 +50,28 @@ namespace WebApplication.WebAPI.Clients.Base
             var response = await Http.DeleteAsync(url, Cancel).ConfigureAwait(false);
             return response;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            //GC.SuppressFinalize(this); // если есть финализатор
+        }
+
+        //~BaseClient() => Dispose(false);
+
+        protected bool _Disposed;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_Disposed) return;
+            _Disposed = true;
+
+            if (disposing)
+            {
+                // освобождаем управляемые ресурсы - обычные объекты с интерфейсом IDisposable
+                //Http.Dispose(); // - не должны вызывать Dispose() потому, что не мы его создавали
+            }
+
+            // освобождаем неуправляемые ресурсы: COM-объекты на пример
+        }
     }
 }
