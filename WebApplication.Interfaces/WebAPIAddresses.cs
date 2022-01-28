@@ -16,7 +16,7 @@ namespace WebApplication.Interfaces
         public static class Identity
         {
             public const string Users = "api/v1/users";
-            public const string Roles = "api/v1/users";
+            public const string Roles = "api/v1/roles";
         }
     }
 }
