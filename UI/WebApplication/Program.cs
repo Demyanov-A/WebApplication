@@ -12,6 +12,7 @@ using WebApplication.Services.Services;
 using WebApplication.Services.Services.InCookies;
 using WebApplication.Services.Services.InSQL;
 using WebApplication.WebAPI.Clients.Employees;
+using WebApplication.WebAPI.Clients.Identity;
 using WebApplication.WebAPI.Clients.Orders;
 using WebApplication.WebAPI.Clients.Products;
 using WebApplication.WebAPI.Clients.Values;
@@ -19,6 +20,8 @@ using WebApplication.WebAPI.Clients.Values;
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 #region Настройка построителя приложения - определение содержимого
+
+var configuration = builder.Configuration;
 
 var services = builder.Services;
 
@@ -64,7 +67,6 @@ services.AddTransient<IDbInitializer, DbInitializer>();
 
 services.AddScoped<ICartService, InCookiesCartService>();
 
-var configuration = builder.Configuration;
 
 //services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
@@ -81,8 +83,19 @@ services.AddHttpClient("WebApplicationAPI", client => client.BaseAddress = new(c
     .AddTypedClient<IOrderService, OrdersClient>();
 
 services.AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<WebApplicationDB>()
+    //.AddEntityFrameworkStores<WebApplicationDB>()
     .AddDefaultTokenProviders();
+
+services.AddHttpClient("WebApplicationAPIIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
+    .AddTypedClient<IUserStore<User>, UsersClient>()
+    .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+    .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
+    .AddTypedClient<IUserEmailStore<User>, UsersClient>()
+    .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
+    .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
+    .AddTypedClient<IUserClaimStore<User>, UsersClient>()
+    .AddTypedClient<IUserLoginStore<User>, UsersClient>()
+    .AddTypedClient<IRoleStore<Role>, RolesClient>();
 
 services.Configure<IdentityOptions>(opt=>
 {
