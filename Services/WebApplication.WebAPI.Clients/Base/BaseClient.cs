@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication.WebAPI.Clients.Base
 {
-    public abstract class BaseClient
+    public abstract class BaseClient : IDisposable
     {
         protected HttpClient Http { get; }
 
@@ -20,7 +20,7 @@ namespace WebApplication.WebAPI.Clients.Base
         }
 
         protected T? Get<T>(string url) => GetAsync<T>(url).Result;
-        protected async Task<T?> GetAsync<T>(string url)
+        protected async Task<T?> GetAsync<T>(string url, CancellationToken cancel = default)
         {
             var response = await Http.GetAsync(url).ConfigureAwait(false);
             return await response
