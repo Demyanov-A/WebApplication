@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Infrastructure.Conventions;
 using WebApplication.Infrastructure.Middleware;
@@ -96,6 +97,8 @@ services.AddHttpClient("WebApplicationAPIIdentity", client => client.BaseAddress
     .AddTypedClient<IUserClaimStore<User>, UsersClient>()
     .AddTypedClient<IUserLoginStore<User>, UsersClient>()
     .AddTypedClient<IRoleStore<Role>, RolesClient>();
+
+services.AddAutoMapper(Assembly.GetEntryAssembly());
 
 services.Configure<IdentityOptions>(opt=>
 {

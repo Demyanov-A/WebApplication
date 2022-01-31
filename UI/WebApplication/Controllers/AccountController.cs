@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain.Entities.Identity;
@@ -24,15 +25,20 @@ namespace WebApplication.Controllers
         public IActionResult Register() => View(new RegisterUserViewModel());
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterUserViewModel Model)
+        public async Task<IActionResult> Register(RegisterUserViewModel Model, [FromServices] IMapper Mapper)
         {
             if (!ModelState.IsValid)
                 return View(Model);
-            
-            var user = new User
-            {
-                UserName = Model.UserName,
-            };
+
+            //IEnumerable<RegisterUserViewModel> models = Enumerable.Repeat(Model, 5);
+            //var users = Mapper.Map<IEnumerable<User>>(models);
+
+            var user = Mapper.Map<User>(Model);
+
+            //var user = new User
+            //{
+            //    UserName = Model.UserName,
+            //};
 
             var registration_result = await _UserManager.CreateAsync(user, Model.Password).ConfigureAwait(true);
             if (registration_result.Succeeded)

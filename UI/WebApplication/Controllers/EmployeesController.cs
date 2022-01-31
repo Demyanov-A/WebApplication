@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain.Entities;
 using WebApplication.Domain.Entities.Identity;
@@ -13,10 +14,14 @@ namespace WebApplication.Controllers
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
+        private readonly IMapper _Mapper;
+        private readonly ILogger<EmployeesController> _Logger;
 
-        public EmployeesController(IEmployeesData EmployeesData)
+        public EmployeesController(IEmployeesData EmployeesData, IMapper Mapper, ILogger<EmployeesController> Logger)
         {
             _EmployeesData = EmployeesData;
+            _Mapper = Mapper;
+            _Logger = Logger;
         }
 
         public IActionResult Index()
@@ -25,19 +30,22 @@ namespace WebApplication.Controllers
             return View(result);
         }
 
-        //[Route("~/employee/info-{id}")]
+        //[Route("~/employees/info-{id}")]
         public IActionResult EmployeeInfo(int id)
         {
             ViewData["TestValue"] = 123;
 
             var employee = _EmployeesData.GetById(id);
 
-            if(employee is null) return NotFound();
+            if (employee is null) return NotFound();
 
             ViewBag.SelectedEmployee = employee;
 
             return View(employee);
         }
+
+        //[Authorize(Roles = "Admin")]
+        public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
         [Authorize(Roles = Role.Administrators)]
         public IActionResult Edit(int? id)
@@ -45,72 +53,82 @@ namespace WebApplication.Controllers
             if (id is null)
                 return View(new EmployeeViewModel());
 
+            //var employee = __Employees.FirstOrDefault(e => e.Id == id);
             var employee = _EmployeesData.GetById((int)id);
-
-            if(employee is null) 
-                return NotFound();
-
-            var model = new EmployeeViewModel
+            if (employee is null)
             {
-                Id = employee.Id,
-                Name = employee.FirstName,
-                LastName = employee.LastName,
-                Patronymic = employee.Patronymic,
-                Age = employee.Age,
-            };
-            
+                _Logger.LogWarning("При редактировании сотрудника с id:{0} он не был найден", id);
+                return NotFound();
+            }
+
+            //var model = new EmployeeViewModel
+            //{
+            //    Id = employee.Id,
+            //    LastName = employee.LastName,
+            //    Name = employee.FirstName,
+            //    Patronymic = employee.Patronymic,
+            //    Age = employee.Age,
+            //};
+
+            var model = _Mapper.Map<EmployeeViewModel>(employee);
+
             return View(model);
         }
 
         [HttpPost]
         [Authorize(Roles = Role.Administrators)]
-        public IActionResult Edit(EmployeeViewModel model)
+        public IActionResult Edit(EmployeeViewModel Model)
         {
-            if (model.LastName == "Асама" && model.Name == "Бин" && model.Patronymic == "Ладен")
+            if (Model.LastName == "Асама" && Model.Name == "Бин" && Model.Patronymic == "Ладен")
                 ModelState.AddModelError("", "Террористов на работу не берём!");
 
             if (!ModelState.IsValid)
-                return View(model);
+                return View(Model);
 
-            var employee = new Employee
+            //var employee = new Employee
+            //{
+            //    Id = Model.Id,
+            //    LastName = Model.LastName,
+            //    FirstName = Model.Name,
+            //    Patronymic = Model.Patronymic,
+            //    Age = Model.Age,
+            //};
+
+            var employee = _Mapper.Map<Employee>(Model);
+
+            if (Model.Id == 0)
             {
-                Id = model.Id,
-                Age = model.Age,
-                FirstName = model.Name,
-                LastName = model.LastName,
-                Patronymic = model.Patronymic,
-            };
-
-            if (model.Id == 0)
                 _EmployeesData.Add(employee);
+                _Logger.LogInformation("Создан новый сотрудник {0}", employee);
+            }
             else if (!_EmployeesData.Edit(employee))
+            {
+                _Logger.LogInformation("Информация о сотруднике {0} изменена", employee);
                 return NotFound();
+            }
 
             return RedirectToAction("Index");
         }
-
-        public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
         [Authorize(Roles = Role.Administrators)]
         public IActionResult Delete(int id)
         {
             if (id < 0)
-            {
                 return BadRequest();
-            }
 
             var employee = _EmployeesData.GetById(id);
-            if (!_EmployeesData.Edit(employee))
+            if (employee is null)
                 return NotFound();
 
-            var model = new EmployeeViewModel
-            {
-                Id = employee.Id,
-                Name = employee.FirstName,
-                LastName = employee.LastName,
-                Patronymic = employee.Patronymic,
-                Age = employee.Age,
-            };
+            //var model = new EmployeeViewModel
+            //{
+            //    Id = employee.Id,
+            //    LastName = employee.LastName,
+            //    Name = employee.FirstName,
+            //    Patronymic = employee.Patronymic,
+            //    Age = employee.Age,
+            //};
+            var model = _Mapper.Map<EmployeeViewModel>(employee);
 
             return View(model);
         }
@@ -122,8 +140,9 @@ namespace WebApplication.Controllers
             if (!_EmployeesData.Delete(id))
                 return NotFound();
 
+            _Logger.LogInformation("Сотрудник с id:{0} удалён", id);
+
             return RedirectToAction("Index");
         }
-
     }
 }

@@ -21,9 +21,9 @@ namespace WebApplication.WebAPI.Clients.Base
         }
 
         protected T? Get<T>(string url) => GetAsync<T>(url).Result;
-        protected async Task<T?> GetAsync<T>(string url, CancellationToken cancel = default)
+        protected async Task<T?> GetAsync<T>(string url, CancellationToken Сancel = default)
         {
-            var response = await Http.GetAsync(url).ConfigureAwait(false);
+            var response = await Http.GetAsync(url,Сancel).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.NoContent) return default;
             return await response
                 .EnsureSuccessStatusCode()
