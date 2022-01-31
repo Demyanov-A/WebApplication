@@ -365,3 +365,5 @@ FodyWeavers.xsd
 **/wwwroot/js/site.*
 **/wwwroot/css/site.*
 *.db
+/Common/WebApplication.Domain/WebApplication.Domain.xml
+/WebApplication.WebAPI/WebApplication.WebAPI.xml

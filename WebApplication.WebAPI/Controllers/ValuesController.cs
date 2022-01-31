@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication.Interfaces;
 
 namespace WebApplication.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Route(WebAPIAddresses.Values)]
     public class ValuesController : ControllerBase
     {
         private static readonly Dictionary<int, string> _Values = Enumerable.Range(1, 10)

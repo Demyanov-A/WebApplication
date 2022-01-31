@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebApplication.Domain.DTO;
 using WebApplication.Domain.Entities.Order;
 using WebApplication.Domain.ViewModels;
+using WebApplication.Interfaces;
 using WebApplication.Interfaces.Services;
 using WebApplication.WebAPI.Clients.Base;
 
@@ -14,7 +15,7 @@ namespace WebApplication.WebAPI.Clients.Orders
 {
     public class OrdersClient : BaseClient, IOrderService
     {
-        public OrdersClient(HttpClient Client) : base(Client, "api/orders")
+        public OrdersClient(HttpClient Client) : base(Client, WebAPIAddresses.Orders)
         {
         }
 

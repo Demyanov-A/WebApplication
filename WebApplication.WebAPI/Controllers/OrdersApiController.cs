@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain.DTO;
+using WebApplication.Interfaces;
 using WebApplication.Interfaces.Services;
 
 namespace WebApplication.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/orders")]
+    [Route(WebAPIAddresses.Orders)]
     public class OrdersApiController : ControllerBase
     {
         private readonly IOrderService _OrderService;

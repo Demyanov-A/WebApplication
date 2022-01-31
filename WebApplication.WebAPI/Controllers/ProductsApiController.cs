@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain;
 using WebApplication.Domain.DTO;
+using WebApplication.Interfaces;
 using WebApplication.Interfaces.Services;
 
 namespace WebApplication.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/products")]
+    [Route(WebAPIAddresses.Products)]
     public class ProductsApiController : ControllerBase
     {
         private readonly IProductData _ProductData;
