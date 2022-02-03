@@ -4,10 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication.DAL.Context;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Interfaces.Services;
+using WebApplication.Logging;
 using WebApplication.Services.Services;
 using WebApplication.Services.Services.InSQL;
+using WebApplication.WebAPI.Infrastructure.Middleware;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+
+builder.Logging.AddLog4Net();
 
 // Add services to the container.
 
@@ -92,6 +96,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

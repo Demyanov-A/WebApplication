@@ -14,6 +14,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
+	  <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+	  <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+	  <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +32,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Common\WebApplication.Domain\WebApplication.Domain.csproj" />
+	  <ProjectReference Include="..\..\Common\WebApplication.Logging\WebApplication.Logging.csproj" />
 	  <ProjectReference Include="..\..\Data\WebApplication.DAL.SqlLite\WebApplication.DAL.SqLite.csproj" />
 	  <ProjectReference Include="..\..\Data\WebApplication.DAL\WebApplication.DAL.csproj" />
 	  <ProjectReference Include="..\..\Services\WebApplication.WebAPI.Clients\WebApplication.WebAPI.Clients.csproj" />
