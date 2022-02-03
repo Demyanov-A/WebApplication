@@ -7,6 +7,7 @@ using WebApplication.Interfaces.Services;
 using WebApplication.Logging;
 using WebApplication.Services.Services;
 using WebApplication.Services.Services.InSQL;
+using WebApplication.WebAPI.Infrastructure.Middleware;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -95,6 +96,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
