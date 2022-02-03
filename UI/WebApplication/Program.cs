@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Interfaces.Services;
 using WebApplication.Interfaces.TestAPI;
+using WebApplication.Logging;
 using WebApplication.Services.Services;
 using WebApplication.Services.Services.InCookies;
 using WebApplication.Services.Services.InSQL;
@@ -19,6 +20,8 @@ using WebApplication.WebAPI.Clients.Products;
 using WebApplication.WebAPI.Clients.Values;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+
+builder.Logging.AddLog4Net();
 
 #region Настройка построителя приложения - определение содержимого
 
