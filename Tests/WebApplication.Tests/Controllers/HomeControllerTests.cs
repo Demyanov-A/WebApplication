@@ -40,7 +40,7 @@ namespace WebApplication.Tests.Controllers
 
             const string id = "123";
             const string value_1 = "QWE";
-            const string expected_string = $"Hello World! {id} - {value_1}";
+            const string expected_string = $"Hello World {id} - {value_1}";
 
             var controller = new HomeController();
 
