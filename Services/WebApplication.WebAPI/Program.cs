@@ -22,19 +22,19 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen(opt =>
 {
-    const string webstore_api_xml = "WebApplication.WebAPI.xml";
-    const string webstore_domain_xml = "WebApplication.Domain.xml";
+    const string WebApplication_api_xml = "WebApplication.WebAPI.xml";
+    const string WebApplication_domain_xml = "WebApplication.Domain.xml";
     const string debug_path = "bin/Debug/net6.0";
 
-    if (File.Exists(webstore_api_xml))
-        opt.IncludeXmlComments(webstore_api_xml);
-    else if (File.Exists(Path.Combine(debug_path, webstore_api_xml)))
-        opt.IncludeXmlComments(Path.Combine(debug_path, webstore_api_xml));
+    if (File.Exists(WebApplication_api_xml))
+        opt.IncludeXmlComments(WebApplication_api_xml);
+    else if (File.Exists(Path.Combine(debug_path, WebApplication_api_xml)))
+        opt.IncludeXmlComments(Path.Combine(debug_path, WebApplication_api_xml));
 
-    if (File.Exists(webstore_domain_xml))
-        opt.IncludeXmlComments(webstore_domain_xml);
-    else if (File.Exists(Path.Combine(debug_path, webstore_domain_xml)))
-        opt.IncludeXmlComments(Path.Combine(debug_path, webstore_domain_xml));
+    if (File.Exists(WebApplication_domain_xml))
+        opt.IncludeXmlComments(WebApplication_domain_xml);
+    else if (File.Exists(Path.Combine(debug_path, WebApplication_domain_xml)))
+        opt.IncludeXmlComments(Path.Combine(debug_path, WebApplication_domain_xml));
 });
 
 var database_type = builder.Configuration["Database"];

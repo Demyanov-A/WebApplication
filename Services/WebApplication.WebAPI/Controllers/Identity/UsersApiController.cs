@@ -84,7 +84,7 @@ namespace WebApplication.WebAPI.Controllers.Identity
         public async Task<User> FindByNameAsync(string name) => await _UserStore.FindByNameAsync(name);
 
         [HttpPost("Role/{role}")] // POST -> api/v1/users/role/admin - добавляет роль "admin" пользователю, который передаётся в теле запроса
-        public async Task AddToRoleAsync([FromBody] User user, string role/*, [FromServices] WebStoreDB db*/)
+        public async Task AddToRoleAsync([FromBody] User user, string role/*, [FromServices] WebApplicationDB db*/)
         {
             await _UserStore.AddToRoleAsync(user, role);
             await _UserStore.Context.SaveChangesAsync();
@@ -93,7 +93,7 @@ namespace WebApplication.WebAPI.Controllers.Identity
 
         [HttpDelete("Role/{role}")]
         [HttpPost("Role/Delete/{role}")]
-        public async Task RemoveFromRoleAsync([FromBody] User user, string role/*, [FromServices] WebStoreDB db*/)
+        public async Task RemoveFromRoleAsync([FromBody] User user, string role/*, [FromServices] WebApplicationDB db*/)
         {
             await _UserStore.RemoveFromRoleAsync(user, role);
             await _UserStore.Context.SaveChangesAsync();
@@ -131,7 +131,7 @@ namespace WebApplication.WebAPI.Controllers.Identity
         public async Task<IList<Claim>> GetClaimsAsync([FromBody] User user) => await _UserStore.GetClaimsAsync(user);
 
         [HttpPost("AddClaims")]
-        public async Task AddClaimsAsync([FromBody] AddClaimDTO ClaimInfo/*, [FromServices] WebStoreDB db*/)
+        public async Task AddClaimsAsync([FromBody] AddClaimDTO ClaimInfo/*, [FromServices] WebApplicationDB db*/)
         {
             await _UserStore.AddClaimsAsync(ClaimInfo.User, ClaimInfo.Claims);
             await _UserStore.Context.SaveChangesAsync();
@@ -139,7 +139,7 @@ namespace WebApplication.WebAPI.Controllers.Identity
         }
 
         [HttpPost("ReplaceClaim")]
-        public async Task ReplaceClaimAsync([FromBody] ReplaceClaimDTO ClaimInfo/*, [FromServices] WebStoreDB db*/)
+        public async Task ReplaceClaimAsync([FromBody] ReplaceClaimDTO ClaimInfo/*, [FromServices] WebApplicationDB db*/)
         {
             await _UserStore.ReplaceClaimAsync(ClaimInfo.User, ClaimInfo.Claim, ClaimInfo.NewClaim);
             await _UserStore.Context.SaveChangesAsync();
@@ -147,7 +147,7 @@ namespace WebApplication.WebAPI.Controllers.Identity
         }
 
         [HttpPost("RemoveClaim")]
-        public async Task RemoveClaimsAsync([FromBody] RemoveClaimDTO ClaimInfo/*, [FromServices] WebStoreDB db*/)
+        public async Task RemoveClaimsAsync([FromBody] RemoveClaimDTO ClaimInfo/*, [FromServices] WebApplicationDB db*/)
         {
             await _UserStore.RemoveClaimsAsync(ClaimInfo.User, ClaimInfo.Claims);
             await _UserStore.Context.SaveChangesAsync();
@@ -241,7 +241,7 @@ namespace WebApplication.WebAPI.Controllers.Identity
         #region Login/Lockout
 
         [HttpPost("AddLogin")]
-        public async Task AddLoginAsync([FromBody] AddLoginDTO login/*, [FromServices] WebStoreDB db*/)
+        public async Task AddLoginAsync([FromBody] AddLoginDTO login/*, [FromServices] WebApplicationDB db*/)
         {
             await _UserStore.AddLoginAsync(login.User, login.UserLoginInfo);
             await _UserStore.Context.SaveChangesAsync();
@@ -249,7 +249,7 @@ namespace WebApplication.WebAPI.Controllers.Identity
         }
 
         [HttpPost("RemoveLogin/{LoginProvider}/{ProviderKey}")]
-        public async Task RemoveLoginAsync([FromBody] User user, string LoginProvider, string ProviderKey/*, [FromServices] WebStoreDB db*/)
+        public async Task RemoveLoginAsync([FromBody] User user, string LoginProvider, string ProviderKey/*, [FromServices] WebApplicationDB db*/)
         {
             await _UserStore.RemoveLoginAsync(user, LoginProvider, ProviderKey);
             await _UserStore.Context.SaveChangesAsync();

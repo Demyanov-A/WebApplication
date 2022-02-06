@@ -31,8 +31,8 @@ builder.Host.UseSerilog((host, log) => log.ReadFrom.Configuration(host.Configura
     .Enrich.FromLogContext()
     .WriteTo.Console(
         outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
-    .WriteTo.RollingFile($@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
-    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
+    .WriteTo.RollingFile($@".\Logs\WebApplication[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
+    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebApplication[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
     .WriteTo.Seq("http://localhost:5341/"));
 
 #region Настройка построителя приложения - определение содержимого

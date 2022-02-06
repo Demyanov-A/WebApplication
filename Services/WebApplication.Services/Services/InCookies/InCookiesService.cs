@@ -49,7 +49,7 @@ namespace WebApplication.Services.Services.InCookies
             var user = HttpContextAccessor.HttpContext!.User;
             var user_name = user.Identity!.IsAuthenticated ? $"-{user.Identity.Name}" : null;
 
-            _CartName = $"WebStore.GB.Cart{user_name}";
+            _CartName = $"WebApplication.GB.Cart{user_name}";
         }
 
         public void Add(int Id)
