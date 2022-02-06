@@ -13,9 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\WebApplication.Logging\WebApplication.Logging.csproj" />
-    <ProjectReference Include="..\Data\WebApplication.DAL.SqlLite\WebApplication.DAL.SqLite.csproj" />
-    <ProjectReference Include="..\Data\WebApplication.DAL\WebApplication.DAL.csproj" />
+    <ProjectReference Include="..\..\Common\WebApplication.Logging\WebApplication.Logging.csproj" />
+    <ProjectReference Include="..\..\Data\WebApplication.DAL.SqlLite\WebApplication.DAL.SqLite.csproj" />
     <ProjectReference Include="..\WebApplication.Services\WebApplication.Services.csproj" />
   </ItemGroup>
 

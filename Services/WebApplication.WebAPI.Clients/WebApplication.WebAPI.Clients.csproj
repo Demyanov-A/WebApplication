@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <ProjectReference Include="..\..\WebApplication.Interfaces\WebApplication.Interfaces.csproj" />
-  </ItemGroup>
+	  <ProjectReference Include="..\WebApplication.Interfaces\WebApplication.Interfaces.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApplication.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:WebApplication.WebAPI.Controllers.EmployeesApiController.Get">
+            <summary>Получение всех сотрудников</summary>
+        </member>
+        <member name="M:WebApplication.WebAPI.Controllers.EmployeesApiController.GetById(System.Int32)">
+            <summary>Получение сотрудника по его идентификатору</summary>
+            <param name="Id">Идентификатор сотрудника</param>
+        </member>
+        <member name="M:WebApplication.WebAPI.Controllers.EmployeesApiController.Add(WebApplication.Domain.Entities.Employee)">
+            <summary>Добавление нового сотрудника</summary>
+            <param name="employee">Новый сотрудник</param>
+        </member>
+        <member name="M:WebApplication.WebAPI.Controllers.EmployeesApiController.Update(WebApplication.Domain.Entities.Employee)">
+            <summary>Обновление информации о сотруднике</summary>
+            <param name="employee">Структура с информацией о сотруднике</param>
+        </member>
+    </members>
+</doc>
