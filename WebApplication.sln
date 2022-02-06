@@ -31,6 +31,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication.WPF", "UI\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication.Logging", "Common\WebApplication.Logging\WebApplication.Logging.csproj", "{88969819-3A48-40CF-B953-2CAC81253D65}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D3A53CE9-8CA7-4D1D-9016-82EB1A8E6D00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication.Tests", "Tests\WebApplication.Tests\WebApplication.Tests.csproj", "{BC43A255-3363-4816-B2C5-8E9D25A66DB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0881D8EF-9F4A-49DB-A942-9A4B3D696826}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication.Services.Tests", "Tests\WebApplication.Services.Tests\WebApplication.Services.Tests.csproj", "{204AB442-E9A4-4B1A-8553-3EE74C047480}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +88,14 @@ Global
 		{88969819-3A48-40CF-B953-2CAC81253D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88969819-3A48-40CF-B953-2CAC81253D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88969819-3A48-40CF-B953-2CAC81253D65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC43A255-3363-4816-B2C5-8E9D25A66DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC43A255-3363-4816-B2C5-8E9D25A66DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC43A255-3363-4816-B2C5-8E9D25A66DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC43A255-3363-4816-B2C5-8E9D25A66DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{204AB442-E9A4-4B1A-8553-3EE74C047480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{204AB442-E9A4-4B1A-8553-3EE74C047480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{204AB442-E9A4-4B1A-8553-3EE74C047480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{204AB442-E9A4-4B1A-8553-3EE74C047480}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +111,8 @@ Global
 		{D1D4FC1C-DD24-4F88-86B7-7D57419F2739} = {33BBE31C-FA02-454D-AF6F-FB0DD99FC048}
 		{11A8D251-5F90-400D-91EB-027500AB5783} = {7635ACE1-B8D0-4930-ACD8-8B32C63F7141}
 		{88969819-3A48-40CF-B953-2CAC81253D65} = {9FF80630-EA49-42E0-A801-CDC9DF294A1C}
+		{BC43A255-3363-4816-B2C5-8E9D25A66DB9} = {D3A53CE9-8CA7-4D1D-9016-82EB1A8E6D00}
+		{204AB442-E9A4-4B1A-8553-3EE74C047480} = {D3A53CE9-8CA7-4D1D-9016-82EB1A8E6D00}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {275965D4-F904-4FFB-8713-B6753CADE041}

@@ -11,6 +11,7 @@ using Serilog.Events;
 using Serilog.Formatting.Json;
 using WebApplication.Domain.Entities.Identity;
 using WebApplication.Interfaces.Services;
+using WebApplication.Interfaces.Services.InCookies;
 using WebApplication.Interfaces.TestAPI;
 using WebApplication.Logging;
 using WebApplication.Services.Services;
@@ -81,8 +82,10 @@ services.AddTransient<IDbInitializer, DbInitializer>();
 
 //services.AddScoped<IOrderService, SqlOrderService>();
 
-services.AddScoped<ICartService, InCookiesCartService>();
+//services.AddScoped<ICartService, InCookiesCartService>();
 
+services.AddScoped<ICartStore, InCookiesCartStore>();
+services.AddScoped<ICartService, CartService>();
 
 //services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
