@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Domain.ViewModels;
 using WebApplication.Interfaces.Services;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     public class UserProfileController : Controller
     {
         public IActionResult Index() => View();
