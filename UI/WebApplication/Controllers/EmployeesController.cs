@@ -10,7 +10,7 @@ namespace WebApplication.Controllers
 {
     //[Route("empl/[action]/{Id?}")]
     //[Route("Staff/{action=Index}/{Id?}")]
-    //[Authorize]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
