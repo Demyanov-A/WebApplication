@@ -1,13 +1,13 @@
-﻿@model IEnumerable<WebApplication.Domain.ViewModels.SectionViewModel>
-
+﻿@model WebApplication.Domain.ViewModels.SelectableSectionsViewModel
 
 <h2>Категории</h2>
 <div class="panel-group category-products" id="accordian"><!--category-productsr-->
-	@foreach (var parent_section in Model)
-	{
-	    if (parent_section.ChildSections.Count > 0)
-	    {
-	        <div class="panel panel-default">
+    
+    @foreach (var parent_section in Model!.Sections)
+    {
+        if (parent_section.ChildSections.Count > 0)
+        {
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordian" href="#@parent_section.GetHashCode()">
@@ -16,26 +16,25 @@
                         </a>
                     </h4>
                 </div>
-                <div id="@parent_section.GetHashCode()" class="panel-collapse collapse">
+                <div id="@parent_section.GetHashCode()" class="panel-collapse collapse @(parent_section.Id == Model.ParentSectionId ? "in" : null)">
                     <div class="panel-body">
                         <ul>
                             @foreach (var child_section in parent_section.ChildSections)
                             {
-                                <li>
+                                <li @(child_section.Id == Model.SectionId ? "class=active" : null)>
                                     <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@child_section.Id">
                                         @child_section.Name
                                     </a>
                                 </li>
                             }
-                            
                         </ul>
                     </div>
                 </div>
             </div>
-	    }
-	    else
-	    {
-	        <div class="panel panel-default">
+        }
+        else
+        {
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@parent_section.Id">
@@ -44,7 +43,10 @@
                     </h4>
                 </div>
             </div>
-	    }
-	}
+        }
+    }
 
+    
+    
+    
 </div><!--/category-products-->
