@@ -14,8 +14,9 @@ namespace WebApplication.Components
     {
         private readonly IProductData _ProductData;
         public BrandsViewComponent(IProductData ProductData) => _ProductData = ProductData;
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(string BrandId)
         {
+            ViewBag.BrandId = (int.TryParse(BrandId, out var id) ? id : (int?)null)!;
             return View(GetBrands());
         }
 
