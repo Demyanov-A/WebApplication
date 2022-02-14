@@ -70,7 +70,7 @@ namespace WebApplication.Controllers
         public IActionResult DecrementAPI(int Id)
         {
             _CartService.Decrement(Id);
-            return Ok();
+            return Ok(new { Id, message = $"Товар {Id} был убавлен на 1" });
         }
 
         public IActionResult RemoveAPI(int Id)
