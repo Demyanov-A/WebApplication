@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\Components\Cart\Default.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 	  <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
@@ -17,6 +21,7 @@
 	  <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
 	  <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
 	  <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
+	  <PackageReference Include="SimpleMvcSitemap" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,7 +33,9 @@
 
 	<ItemGroup>
 	  <None Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+	  <None Include="Views\Home\Components\Cart\Default.cshtml" />
 	  <None Include="Views\Shared\Components\BreadCrumbs\Default.cshtml" />
+	  <None Include="wwwroot\js\Cart\CartLogic.js" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -39,7 +46,6 @@
 	  <ProjectReference Include="..\..\Services\WebApplication.Interfaces\WebApplication.Interfaces.csproj" />
 	  <ProjectReference Include="..\..\Services\WebApplication.Services\WebApplication.Services.csproj" />
 	  <ProjectReference Include="..\..\Services\WebApplication.WebAPI.Clients\WebApplication.WebAPI.Clients.csproj" />
-	  <PackageReference Include="SimpleMvcSitemap" Version="4.0.1" />
 	</ItemGroup>
 
 </Project>
