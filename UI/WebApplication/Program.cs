@@ -47,53 +47,11 @@ services.AddControllersWithViews(opt =>
     opt.Conventions.Add(new TestConvention());
 });
 
-var database_type = builder.Configuration["DataBase"];
-
-switch (database_type)
-{
-    default: throw new InvalidOperationException($"DataBase type {database_type} not supported");
-    case "SqLite":
-        services.AddDbContext<WebApplicationDB>(opt =>
-            opt.UseSqlite(builder.Configuration.GetConnectionString("SqLite"),
-                o => o.MigrationsAssembly("WebApplication.DAL.SqLite")));
-        break;
-    case "SqlServer":
-        services.AddDbContext<WebApplicationDB>(opt =>
-            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
-        break;
-    case "SqlServerLocalDB":
-        services.AddDbContext<WebApplicationDB>(opt =>
-            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
-        break;
-}
-
 services.AddDbContext<WebApplicationDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
 
-services.AddTransient<IDbInitializer, DbInitializer>();
-
-//services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-
-//services.AddScoped<IEmployeesData, SqlEmployeesData>();
-
-//services.AddSingleton<IProductData, InMemoryProductData>();
-
-//services.AddScoped<IProductData, SqlProductData>();
-
-//services.AddScoped<IOrderService, SqlOrderService>();
-
-//services.AddScoped<ICartService, InCookiesCartService>();
-
 services.AddScoped<ICartStore, InCookiesCartStore>();
 services.AddScoped<ICartService, CartService>();
-
-//services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-//services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-//services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-//services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
 services.AddHttpClient("WebApplicationAPI", client => client.BaseAddress = new(configuration["WebAPI"]))
     .AddTypedClient<IValuesService, ValuesClient>()
@@ -153,12 +111,6 @@ services.ConfigureApplicationCookie(opt =>
 
 var app = builder.Build(); //Сборка приложения
 
-await using(var scope = app.Services.CreateAsyncScope())
-{
-    var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-
-    await db_initializer.InitializeAsync(RemoveBefore: false).ConfigureAwait(true);
-}
 
 #region Конфигурирование конвейера обработки входящих соединений
 
