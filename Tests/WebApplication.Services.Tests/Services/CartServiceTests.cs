@@ -41,7 +41,7 @@ namespace WebApplication.Services.Tests.Services
             _ProductDataMock = new Mock<IProductData>();
             _ProductDataMock
                .Setup(c => c.GetProducts(It.IsAny<ProductFilter>()))
-               .Returns(new[]
+               .Returns(new ProductsPage(new[]
                 {
                 new Product
                 {
@@ -76,7 +76,7 @@ namespace WebApplication.Services.Tests.Services
                     SectionId = 3,
                     Section = new Section{ Id = 3, Name = "Section 3", Order = 3 },
                 },
-                });
+                },3));
 
             _CartStoreMock = new Mock<ICartStore>();
             _CartStoreMock.Setup(c => c.Cart).Returns(_Cart);

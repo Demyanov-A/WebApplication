@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\Components\Cart\Default.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 	  <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
@@ -29,6 +33,7 @@
 
 	<ItemGroup>
 	  <None Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+	  <None Include="Views\Home\Components\Cart\Default.cshtml" />
 	  <None Include="Views\Shared\Components\BreadCrumbs\Default.cshtml" />
 	  <None Include="wwwroot\js\Cart\CartLogic.js" />
 	</ItemGroup>

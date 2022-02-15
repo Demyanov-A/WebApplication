@@ -81,13 +81,13 @@ namespace WebApplication.Services.Services
                 Ids = cart.Items.Select(i => i.ProductId).ToArray()
             });
 
-            var priducts_views = products.ToView().ToDictionary(p => p!.Id);
+            var products_views = products.Products.ToView().ToDictionary(p => p!.Id);
 
             return new()
             {
                 Items = cart.Items
-                   .Where(item => priducts_views.ContainsKey(item.ProductId))
-                   .Select(item => (priducts_views[item.ProductId], item.Quantity))!
+                   .Where(item => products_views.ContainsKey(item.ProductId))
+                   .Select(item => (products_views[item.ProductId], item.Quantity))!
             };
         }
     }
