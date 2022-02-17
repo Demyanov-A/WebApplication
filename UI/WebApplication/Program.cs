@@ -22,103 +22,55 @@ using WebApplication.WebAPI.Clients.Identity;
 using WebApplication.WebAPI.Clients.Orders;
 using WebApplication.WebAPI.Clients.Products;
 using WebApplication.WebAPI.Clients.Values;
+using Microsoft.Extensions.Logging.Debug;
+using Polly;
+using Polly.Extensions.Http;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
+//builder.Logging
+//.ClearProviders()
+//.AddConsole(opt => opt.LogToStandardErrorThreshold = LogLevel.Information)
+//.AddFilter("Microsoft", level => level >= LogLevel.Information)
+//.AddFilter<DebugLoggerProvider>((category, level) => category.StartsWith("Microsoft") && level > LogLevel.Debug)
+//;
+
 builder.Logging.AddLog4Net();
 builder.Host.UseSerilog((host, log) => log.ReadFrom.Configuration(host.Configuration)
-    .MinimumLevel.Debug()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .Enrich.FromLogContext()
-    .WriteTo.Console(
+   .MinimumLevel.Debug()
+   .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+   .Enrich.FromLogContext()
+   .WriteTo.Console(
         outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
-    .WriteTo.RollingFile($@".\Logs\WebApplication[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
-    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebApplication[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
-    .WriteTo.Seq("http://localhost:5341/"));
+   .WriteTo.RollingFile($@".\Logs\WebApplication[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
+   .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebApplication[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
+   .WriteTo.Seq("http://localhost:5341/"));
 
 #region Настройка построителя приложения - определение содержимого
 
 var configuration = builder.Configuration;
-
 var services = builder.Services;
-
 services.AddControllersWithViews(opt =>
 {
     opt.Conventions.Add(new TestConvention());
 });
 
-var database_type = builder.Configuration["DataBase"];
-
-switch (database_type)
-{
-    default: throw new InvalidOperationException($"DataBase type {database_type} not supported");
-    case "SqLite":
-        services.AddDbContext<WebApplicationDB>(opt =>
-            opt.UseSqlite(builder.Configuration.GetConnectionString("SqLite"),
-                o => o.MigrationsAssembly("WebApplication.DAL.SqLite")));
-        break;
-    case "SqlServer":
-        services.AddDbContext<WebApplicationDB>(opt =>
-            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
-        break;
-    case "SqlServerLocalDB":
-        services.AddDbContext<WebApplicationDB>(opt =>
-            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
-        break;
-}
-
-services.AddDbContext<WebApplicationDB>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerLocalDB")));
-
-services.AddTransient<IDbInitializer, DbInitializer>();
-
-//services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-
-//services.AddScoped<IEmployeesData, SqlEmployeesData>();
-
-//services.AddSingleton<IProductData, InMemoryProductData>();
-
-//services.AddScoped<IProductData, SqlProductData>();
-
-//services.AddScoped<IOrderService, SqlOrderService>();
-
-//services.AddScoped<ICartService, InCookiesCartService>();
-
-services.AddScoped<ICartStore, InCookiesCartStore>();
-services.AddScoped<ICartService, CartService>();
-
-//services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-//services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-//services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-//services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-
-services.AddHttpClient("WebApplicationAPI", client => client.BaseAddress = new(configuration["WebAPI"]))
-    .AddTypedClient<IValuesService, ValuesClient>()
-    .AddTypedClient<IEmployeesData, EmployeesClient>()
-    .AddTypedClient<IProductData, ProductsClient>()
-    .AddTypedClient<IOrderService, OrdersClient>();
-
 services.AddIdentity<User, Role>()
-    //.AddEntityFrameworkStores<WebApplicationDB>()
-    .AddDefaultTokenProviders();
+   .AddDefaultTokenProviders();
 
 services.AddHttpClient("WebApplicationAPIIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
-    .AddTypedClient<IUserStore<User>, UsersClient>()
-    .AddTypedClient<IUserRoleStore<User>, UsersClient>()
-    .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
-    .AddTypedClient<IUserEmailStore<User>, UsersClient>()
-    .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
-    .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
-    .AddTypedClient<IUserClaimStore<User>, UsersClient>()
-    .AddTypedClient<IUserLoginStore<User>, UsersClient>()
-    .AddTypedClient<IRoleStore<Role>, RolesClient>();
+   .AddTypedClient<IUserStore<User>, UsersClient>()
+   .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+   .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
+   .AddTypedClient<IUserEmailStore<User>, UsersClient>()
+   .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
+   .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
+   .AddTypedClient<IUserClaimStore<User>, UsersClient>()
+   .AddTypedClient<IUserLoginStore<User>, UsersClient>()
+   .AddTypedClient<IRoleStore<Role>, RolesClient>()
+   .AddPolicyHandler(GetRetryPolicy());
 
-services.AddAutoMapper(Assembly.GetEntryAssembly());
-
-services.Configure<IdentityOptions>(opt=>
+services.Configure<IdentityOptions>(opt =>
 {
 #if DEBUG
     opt.Password.RequireDigit = false;
@@ -130,7 +82,8 @@ services.Configure<IdentityOptions>(opt=>
 #endif
 
     opt.User.RequireUniqueEmail = false;
-    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ1234567890";
+
     opt.Lockout.AllowedForNewUsers = false;
     opt.Lockout.MaxFailedAccessAttempts = 10;
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
@@ -140,27 +93,64 @@ services.ConfigureApplicationCookie(opt =>
 {
     opt.Cookie.Name = "WebApplication.GB";
     opt.Cookie.HttpOnly = true;
-    //opt.Cookie.Expiration = TimeSpan.FromDays(10);
+
+    //opt.Cookie.Expiration = TimeSpan.FromDays(10); // устарело
     opt.ExpireTimeSpan = TimeSpan.FromDays(10);
+
     opt.LoginPath = "/Account/Login";
     opt.LogoutPath = "/Account/Logout";
     opt.AccessDeniedPath = "/Account/AccessDenied";
-    opt.SlidingExpiration = true;
 
+    opt.SlidingExpiration = true;
 });
+
+//services.AddSingleton<IEmployeesData, InMemoryEmployeesData>(); // Singleton - потому что InMemory!
+//services.AddSingleton<IProductData, InMemoryProductData>();     // Singleton - потому что InMemory!
+
+//services.AddScoped<IEmployeesData, SqlEmployeesData>();
+//services.AddScoped<IProductData, SqlProductData>(); // !!! AddScoped !!!
+//services.AddScoped<IOrderService, SqlOrderService>();
+services.AddScoped<ICartStore, InCookiesCartStore>();
+services.AddScoped<ICartService, CartService>();
+
+//services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+//services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+//services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+//services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+services.AddHttpClient("WebApplicationAPI", client => client.BaseAddress = new(configuration["WebAPI"]))
+   .AddTypedClient<IValuesService, ValuesClient>()
+   .AddTypedClient<IEmployeesData, EmployeesClient>()
+   .AddTypedClient<IProductData, ProductsClient>()
+   .AddTypedClient<IOrderService, OrdersClient>()
+   .AddPolicyHandler(GetRetryPolicy())
+   .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(int MaxRetryCount = 5, int MaxJitterTime = 1000)
+{
+    var jitter = new Random();
+    return HttpPolicyExtensions
+       .HandleTransientHttpError()
+       .WaitAndRetryAsync(MaxRetryCount, RetryAttempt =>
+            TimeSpan.FromSeconds(Math.Pow(2, RetryAttempt)) +
+            TimeSpan.FromMilliseconds(jitter.Next(0, MaxJitterTime)));
+}
+
+static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy() =>
+    HttpPolicyExtensions
+       .HandleTransientHttpError()
+       .CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30));
+
+//services.AddAutoMapper(typeof(Program));
+services.AddAutoMapper(Assembly.GetEntryAssembly());
 
 #endregion
 
-var app = builder.Build(); //Сборка приложения
+var app = builder.Build(); // Сборка приложения
 
-await using(var scope = app.Services.CreateAsyncScope())
-{
-    var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+//app.Urls.Add("http://+:80"); // - если хочется обеспечить видимость приложения в локальной сети
 
-    await db_initializer.InitializeAsync(RemoveBefore: false).ConfigureAwait(true);
-}
-
-#region Конфигурирование конвейера обработки входящих соединений
+#region Конфигурирование конвейера обработки входящих соединения
 
 if (app.Environment.IsDevelopment())
 {
@@ -169,13 +159,11 @@ if (app.Environment.IsDevelopment())
 
 //app.Map("/testpath", async context => await context.Response.WriteAsync("Test middleware"));
 
-
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -195,6 +183,7 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
+
 #endregion
 
-app.Run();//Запуск приложения
+app.Run();
